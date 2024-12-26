@@ -1,0 +1,55 @@
+﻿<Window x:Name="MainScreen" x:Class="StartInterface.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StartInterface"
+        mc:Ignorable="d"
+        Title="GAMMA SERVER ver1.3 , dev M.C.A" Height="720" Width="1200" Background="Black" Foreground="#FF020101"
+        Icon="pack://application:,,,/resources/icon.ico">
+
+    <Grid Name="INTERFACE_GRID" >
+
+        <Border Background="Transparent" Focusable="True" MouseLeftButtonDown="FocusableArea_MouseLeftButtonDown">
+            <TextBlock TextWrapping="Wrap" FontSize="35" HorizontalAlignment="Left" Foreground="White" Text="MyOwnSpace" Margin="30,15,0,616"/>
+        </Border>
+
+        <Button x:Name="buttonStart" Content="START" Margin="300,550,0,0" Background="#FF2BF70F" Foreground="White" FontSize="16" HorizontalAlignment="Left" Width="100" Height="54" VerticalAlignment="Top" ClickMode="Press" Click="ButtonStart_Click"/>
+
+        <Button x:Name="buttonStop" Content="STOP" Margin="800,550,0,0" Background="#FFF50808" FontSize="16" Foreground="#FFFBFAFA" HorizontalAlignment="Left" Width="100" Height="54" VerticalAlignment="Top" ClickMode="Press" Click="ButtonStop_Click"/>
+
+        <TextBlock Margin="100,124,0,0" TextWrapping="Wrap" FontSize="20" Text="PRIVATE KEY PATH(privkey.pem)" Height="27" VerticalAlignment="Top" HorizontalAlignment="Left" Width="281" Foreground="White"/>
+
+        <TextBlock Margin="100,184,0,0" TextWrapping="Wrap" Text="CERTIFICATE PATH(cert.pem)" FontSize="20" HorizontalAlignment="Left" Width="250" Height="27" VerticalAlignment="Top" Foreground="White"/>
+
+        <TextBlock Margin="100,244,0,0" TextWrapping="Wrap" FontSize="20" Text="CHAIN PATH(chain.pem)" HorizontalAlignment="Left" Width="220" Height="27" VerticalAlignment="Top" Foreground="White"/>
+
+        <TextBlock Margin="700,124,0,0" TextWrapping="Wrap" Text="EMAIL FOR NODEMAILER" FontSize="20" HorizontalAlignment="Left" Width="250" Height="27" VerticalAlignment="Top" Foreground="White"/>
+
+        <TextBlock Margin="700,184,0,0" TextWrapping="Wrap" Text="PASSWORD FOR THE EMAIL" FontSize="20" HorizontalAlignment="Left" Width="300" Height="27" VerticalAlignment="Top" Foreground="White"/>
+
+        <TextBlock Margin="700,244,0,0" TextWrapping="Wrap" Text="HOSTNAME" VerticalAlignment="Top" FontSize="20" HorizontalAlignment="Left" Width="120" Foreground="White"/>
+
+        <TextBlock Margin="700,304,0,0" TextWrapping="Wrap" Text="PORT" FontSize="20" HorizontalAlignment="Left" Width="60" Height="27" VerticalAlignment="Top" Foreground="White"/>
+
+        <TextBox x:Name="PRIVATE_KEY_PATH" Margin="100,154,0,0" TextWrapping="Wrap" Text="PATH" FontSize="14" Background="White" HorizontalAlignment="Left" Width="400" Height="21" VerticalAlignment="Top"/>
+
+        <TextBox x:Name="CERTIFICATE_PATH" Margin="100,214,0,0" TextWrapping="Wrap" Text="PATH" FontSize="14" HorizontalAlignment="Left" Width="400" Height="22" VerticalAlignment="Top"/>
+
+        <TextBox x:Name="CHAIN_PATH" Margin="100,274,0,0" TextWrapping="Wrap" Text="PATH" FontSize="14" HorizontalAlignment="Left" Width="400" Height="21" VerticalAlignment="Top"/>
+
+        <TextBox x:Name="EMAIL" Margin="700,154,0,0" TextWrapping="Wrap" Text="example@gmail.com" FontSize="14" HorizontalAlignment="Left" Width="400" Height="21" VerticalAlignment="Top"/>
+
+        <TextBox x:Name="EMAIL_PASSWORD" Margin="700,214,0,0" TextWrapping="Wrap" Text="Its should be a specific password generated for email sending!" FontSize="14" HorizontalAlignment="Left" Width="400" Height="21" VerticalAlignment="Top"/>
+
+        <TextBox x:Name="SERVER_HOSTNAME" Margin="700,274,0,0" TextWrapping="Wrap" FontSize="14" Text="IPV4 adress , as set on router virtual server(port-forward)" HorizontalAlignment="Left" Width="400" Height="21" VerticalAlignment="Top"/>
+
+        <TextBox x:Name="SERVER_PORT" Margin="700,334,0,0" TextWrapping="Wrap" FontSize="14" Text="Port number set on virtual server(ex: 8080)" HorizontalAlignment="Left" Width="400" Height="21" VerticalAlignment="Top"/>
+
+        <CheckBox x:Name="LOGS_CHECKBOX" Content="CLICK HERE IF YOU WANT TO SEE ALL SERVER LOGS" Margin="100,504,0,0" ClickMode="Press" HorizontalAlignment="Left" Width="400" Height="15" VerticalAlignment="Top" Click="CheckBoxLog_Click" Foreground="White"/>
+
+        <Button x:Name="SAVE_INPUT" Content="SAVE" Margin="1090,15,0,0" RenderTransformOrigin="0.934,0.703" Background="#FF192DD8" Foreground="White" Click="SaveInput_Click" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="85"/>
+
+    </Grid>
+
+</Window>
