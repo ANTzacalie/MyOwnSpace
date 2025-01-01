@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\ANTzacalie\\Desktop\\MyOwnSpace Server App\\StartInterface\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|c:\\users\\antzacalie\\desktop\\myownspace server app\\startinterface\\startinterface\\servermain.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|solutionrelative:startinterface\\servermain.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|c:\\users\\antzacalie\\desktop\\myownspace server app\\startinterface\\startinterface\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|solutionrelative:startinterface\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|c:\\users\\antzacalie\\desktop\\myownspace server app\\startinterface\\startinterface\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|solutionrelative:startinterface\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|c:\\users\\antzacalie\\desktop\\myownspace server app\\startinterface\\startinterface\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57494293-5EF2-4A1D-A12D-66480F54E20F}|StartInterface\\StartInterface.csproj|solutionrelative:startinterface\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,17 +18,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\ANTzacalie\\Desktop\\MyOwnSpace Server App\\StartInterface\\StartInterface\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "StartInterface\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\ANTzacalie\\Desktop\\MyOwnSpace Server App\\StartInterface\\StartInterface\\MainWindow.xaml.cs",
               "RelativeToolTip": "StartInterface\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAwwIAAAACHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-10T18:42:13.808Z",
               "IsPinned": true,
@@ -49,19 +45,6 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2024-07-10T18:42:15.753Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "serverMain.js",
-              "DocumentMoniker": "C:\\Users\\ANTzacalie\\Desktop\\MyOwnSpace Server App\\StartInterface\\StartInterface\\serverMain.js",
-              "RelativeDocumentMoniker": "StartInterface\\serverMain.js",
-              "ToolTip": "C:\\Users\\ANTzacalie\\Desktop\\MyOwnSpace Server App\\StartInterface\\StartInterface\\serverMain.js",
-              "RelativeToolTip": "StartInterface\\serverMain.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-12-07T20:46:58.347Z",
               "EditorCaption": ""
             },
             {

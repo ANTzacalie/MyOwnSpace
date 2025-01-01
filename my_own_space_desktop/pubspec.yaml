@@ -30,9 +30,10 @@ environment:
 dependencies:
   http: ^1.2.2
   sqlite3: 2.5.0
-  sqlite3_flutter_libs: 0.5.27
+  sqlite3_flutter_libs: ^0.5.28
   path: ^1.8.0
   path_provider: 2.1.5
+  file_picker: ^8.1.7
   flutter:
     sdk: flutter
 
@@ -50,7 +51,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

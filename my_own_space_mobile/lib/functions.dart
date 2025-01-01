@@ -131,4 +131,30 @@ Future<String?> loginPhase3(String email , String password , String sessionId) a
 
 }
 
+Future<List<dynamic>> fetchAllFilesNames() async {
+
+  //test
+  return [ {"RET_VALUE": "SUCCESS"} , [ {"FILE_NAME": "File1" , "FILE_DATE": "29/12/2024" , "FILE_TYPE": "JPG" , "FILE_SIZE": "78MB" , "FILE_ID": "NO_ID"} , {"FILE_NAME": "File2", "FILE_DATE": "29/12/2024" , "FILE_TYPE": "JPG" , "FILE_SIZE": "78MB" , "FILE_ID": "NO_ID"} , {"FILE_NAME": "File3", "FILE_DATE": "29/12/2024" , "FILE_TYPE": "JPG" , "FILE_SIZE": "78MB" , "FILE_ID": "NO_ID"} ] ];
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'database.dart';
 import 'functions.dart';
@@ -5,10 +9,10 @@ import 'functions.dart';
 
 // Main function - entry point of the app
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
 
   final db = DatabaseHelper();
-
   List<Map<String,dynamic>>? connected = await db.getUserCredentials();
 
   String init = "/login";
@@ -16,6 +20,7 @@ void main() async {
   if(connected != null && connected.isNotEmpty) {
 
     //init = "/login3";
+    init = "/main";
     localAddress = connected[0]["ADDRESS"];
     localSessionId = connected[0]["SESSION_ID"];
 
@@ -53,9 +58,9 @@ class MyApp extends StatelessWidget {
       // Define routes (a map of screen names to widgets)
       routes: {
 
-        '/login': (context) => _LoginScreen(), // Login screen
-        '/login2': (context) => _LoginScreen2(),
-        '/login3': (context) => _LoginScreen3(),
+        '/login': (context) => _LoginScreen(), // Login screen1
+        '/login2': (context) => _LoginScreen2(), // Login screen2
+        '/login3': (context) => _LoginScreen3(), // Login screen3
         '/main': (context) => _MainAppScreen(), // Main app screen
         '/settings': (context) => _SettingsScreen(), // Settings screen
         '/about': (context) => _AboutApp(), // About App
@@ -896,6 +901,17 @@ class _LoginScreen3Dynamic extends State<_LoginScreen3> {
       // A Scaffold provides basic screen structure
       appBar: AppBar(
 
+        leading: IconButton(
+
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+
+            Navigator.pushNamed(context, '/login');
+
+          },
+
+        ),
+
         // Top bar title
         title: const Text(
 
@@ -1101,14 +1117,160 @@ class _LoginScreen3Dynamic extends State<_LoginScreen3> {
 
 }
 
+class _MainAppScreen extends StatefulWidget {
+
+  @override
+  _MainAppScreenDynamic createState() => _MainAppScreenDynamic();
+
+}
 
 // MainAppScreen: The main phase of the app
-class _MainAppScreen extends StatelessWidget {
-  @override
+class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
+  List<Map<String, String>> data = [];
+
+  void fetchData() async {
+
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
+
+      if(kDebugMode) {
+
+        print("5 sec period update on interface");
+
+      }
+
+      final updatedData = await fetchAllFilesNames(); // Replace with your logic
+
+      if (updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "SUCCESS") {
+
+        setState(() {
+
+          data = updatedData[1];
+
+        });
+
+      } else {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+
+            const SnackBar(
+
+              duration: Duration(seconds: 3),
+              content: Text(
+                  "Error in fetching data from server, check internet connection or try again later!"),
+
+            )
+
+        );
+
+      }
+
+    });
+
+  }
+
+  Future<void> pickFile() async { // TO BE USED FOR FUTURE TRANSFER , WILL SEE THAT TOMORROW;
+
+    try {
+
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+      if (result != null) {
+
+        // Gets the selected file
+        PlatformFile file = result.files.first;
+
+        // Extract file name without extension
+        String fileNameWithoutExtension = getFileNameWithoutExtension(file.name);
+        String? fileExtension = file.extension;
+        String? fileSize = bytesToMBBase2(file.size).toString();
+
+
+        if (kDebugMode) {
+
+          print("File name: $fileNameWithoutExtension"); // full filename
+          print("File path: ${file.path}"); // file path
+          print("File size: $fileSize mb"); // size in bytes
+          print("File extension: ${file.extension}"); //  file extension
+
+        }
+
+      } else {
+
+        // User canceled the picker
+        if (kDebugMode) {
+
+          print("File picker was canceled.");
+
+        }
+
+      }
+
+    } catch (e) {
+
+      if (kDebugMode) {
+
+        print("Error picking file: $e");
+
+      }
+
+    }
+
+  }
+
+  double bytesToMBBase2(int bytes) {
+    return bytes / 1048576; // Divide by 2^20
+  }
+
+  String getFileNameWithoutExtension(String fileName) {
+
+    int lastDotIndex = fileName.lastIndexOf('.');
+    return (lastDotIndex != -1) ? fileName.substring(0, lastDotIndex) : fileName;
+
+  }
+
+  @override
+  void initState() {
+
+    super.initState();
+
+    fetchAllFilesNames().then((updatedData) {
+
+      if(updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "SUCCESS") {
+
+        setState(() {
+
+          data = updatedData[1];
+
+        });
+
+      } else {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+
+            const SnackBar(
+
+              duration: Duration(seconds: 5),
+              content: Text("Error in fetching data from server, check internet connection or try again later!"),
+
+            )
+
+        );
+
+      }
+
+    });
+
+    fetchData();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     return Scaffold(
+
+      backgroundColor: Colors.black, // Background of the scaffold
 
       // App bar at the top of the screen
       appBar: AppBar(
@@ -1116,7 +1278,7 @@ class _MainAppScreen extends StatelessWidget {
         title: const Text(
 
             'My Own Space',
-            style: TextStyle(fontSize: 30)
+            style: TextStyle(fontSize: 30, color: Colors.white)
 
         ),
 
@@ -1124,7 +1286,7 @@ class _MainAppScreen extends StatelessWidget {
 
           IconButton(
 
-            icon: const Icon(Icons.settings), // Settings icon in the app bar
+            icon: const Icon(Icons.settings , color: Colors.white), // Settings icon in the app bar
 
             onPressed: () {
 
@@ -1137,15 +1299,130 @@ class _MainAppScreen extends StatelessWidget {
 
         ],
 
+        backgroundColor: Colors.orange,
+
       ),
 
       // Main content of the screen
-      body: const Center(
+      body: Stack(
 
-        child: Text(
+          children: [
+            // Your main content here
+            ListView(
 
-          'Main App Phase', // Text displayed on the screen
-          style: TextStyle(fontSize: 24), // Font size for this text
+              children:
+
+                data.map((item) {
+
+                  // TODO: ADAUGA LOGICA DE MANIPULARE A FISIERELOR;
+                  return buildCard(
+
+                      item["FILE_NAME"]!,
+                      item["FILE_DATE"]!,
+                      item["FILE_TYPE"]!,
+                      item["FILE_SIZE"]!,
+                      item["FILE_ID"]!,
+
+                      () => print('Download the ${item['FILE_NAME']}'),
+                      () => print('Edit on ${item['FILE_NAME']}'),
+                      () => print('Delete the ${item['FILE_NAME']}')
+
+                  );
+
+                }).toList(),
+
+            ),
+
+            // FloatingActionButton with custom position
+            Positioned(
+
+              bottom: 60.0,
+              right: 40.0,
+
+              child: FloatingActionButton.extended(
+
+                backgroundColor: Colors.orange,
+                onPressed: () {
+
+                  pickFile();
+
+                  if (kDebugMode) {
+
+                    print("File picker opened;");
+
+                  }
+
+                },
+
+                label: const Text('Add' , style: TextStyle(color: Colors.white),),
+                icon: const Icon(Icons.add, color: Colors.white,),
+
+              ),
+
+            ),
+
+          ],
+
+      ),
+
+    );
+
+  }
+
+
+  Widget buildCard(String name , String date , String type, String size, String id, VoidCallback onDownload, VoidCallback onRename, VoidCallback onDelete) {
+
+    return Card(
+
+      color: Colors.black,
+
+      child: InkWell(
+
+        onTap: () {
+
+          // Handle card tap, no action required , but needs to be here for splash color to work;
+
+        },
+
+        hoverColor: Colors.grey.withOpacity(0.2), // Hover effect for web/desktop
+        splashColor: Colors.grey.withOpacity(0.2), // Splash effect on tap(mobile devices)
+
+        child: ListTile(
+
+          title: Text(name, style: const TextStyle(color: Colors.white, fontSize: 20)),
+          subtitle: Text("DATE: $date   TYPE: $type   SIZE: $size   ID: $id", style: TextStyle(color: Colors.lightGreen[700])),
+
+          trailing: PopupMenuButton<String>(
+
+            onSelected: (value) {
+
+              if (value == 'rename') {
+
+                onRename();
+
+              } else if(value == "download") {
+
+                onDownload();
+
+              } else if (value == 'delete') {
+
+                onDelete();
+
+              }
+
+            },
+
+            itemBuilder: (context) => [
+
+              const PopupMenuItem(value: 'download', child: Text('Download', style: TextStyle(color: Colors.green))),
+              const PopupMenuItem(value: 'rename', child: Text('Rename', style: TextStyle(color: Colors.blue))),
+              const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
+
+            ],
+
+            icon: const Icon(Icons.more_vert, color: Colors.white),
+
+          ),
 
         ),
 

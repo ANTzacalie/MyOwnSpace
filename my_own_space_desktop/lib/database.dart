@@ -35,17 +35,6 @@ class DatabaseHelper {
     final db = sqlite3.open(dbPath); // Open SQLite database at the specified path
 
     db.execute('''
-       CREATE TABLE IF NOT EXISTS main (
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-           FILE_NAME TEXT NOT NULL,
-           FILE_DATE TEXT NOT NULL,
-           FILE_TYPE TEXT NOT NULL,
-           FILE_SIZE TEXT NOT NULL,
-           FILE_ID TEXT NOT NULL
-       )
-    ''');
-
-    db.execute('''
        CREATE TABLE IF NOT EXISTS user (
            id INTEGER PRIMARY KEY AUTOINCREMENT,
            SESSION_ID TEXT NOT NULL,
@@ -55,16 +44,6 @@ class DatabaseHelper {
 
 
     return db;
-
-  }
-
-  // Insert a file into the database
-  Future<void> insertFile(String filename, String fileDate, String fileType, String fileSize, String fileId) async {
-
-    final db = await database;
-
-    const query = "INSERT INTO main (FILE_NAME, FILE_DATE, FILE_TYPE, FILE_SIZE, FILE_ID) VALUES (?, ?, ?, ?, ?)";
-    db.execute(query, [filename, fileDate, fileType, fileSize, fileId]);
 
   }
 
@@ -102,44 +81,11 @@ class DatabaseHelper {
 
   }
 
-  // Find a file by its name
-  Future<Map<String, dynamic>?> findFileByName(String name) async {
-
-    final db = await database;
-
-    const query = "SELECT * FROM main WHERE FILE_NAME = ?";
-    final result = db.select(query, [name]);
-
-    return result.isNotEmpty ? result.first : null;
-
-  }
-
-  // Update a file
-  Future<void> updateFile(String filename, String fileDate, String fileType, String fileSize, String fileId) async {
-
-    final db = await database;
-
-    const query = "UPDATE main SET FILE_NAME = ?, FILE_DATE = ?, FILE_TYPE = ?, FILE_SIZE = ? WHERE FILE_ID = ?";
-    db.execute(query, [filename, fileDate, fileType, fileSize, fileId]);
-
-  }
-
-  // Delete a file by its ID
-  Future<void> deleteFile(String fileId) async {
-
-    final db = await database;
-
-    const query = "DELETE FROM main WHERE FILE_ID = ?";
-    db.execute(query, [fileId]);
-
-  }
-
   // Delete all data (drop tables)
   Future<void> deleteAll() async {
 
     final db = await database;
 
-    db.execute('DROP TABLE IF EXISTS main');
     db.execute('DROP TABLE IF EXISTS user');
   }
 

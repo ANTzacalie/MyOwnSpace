@@ -46,9 +46,9 @@
 
         <TextBox x:Name="SERVER_PORT" Margin="700,334,0,0" TextWrapping="Wrap" FontSize="14" Text="Port number set on virtual server(ex: 8080)" HorizontalAlignment="Left" Width="400" Height="21" VerticalAlignment="Top"/>
 
-        <CheckBox x:Name="LOGS_CHECKBOX" Content="CLICK HERE IF YOU WANT TO SEE ALL SERVER LOGS" Margin="100,504,0,0" ClickMode="Press" HorizontalAlignment="Left" Width="400" Height="15" VerticalAlignment="Top" Click="CheckBoxLog_Click" Foreground="White"/>
+        <CheckBox x:Name="LOGS_CHECKBOX" Content="CHECK THIS BOX IF YOU WANT TO SEE ALL SERVER LOGS" Margin="100,504,0,0" ClickMode="Press" HorizontalAlignment="Left" Width="400" Height="15" VerticalAlignment="Top" Click="CheckBoxLog_Click" Foreground="White"/>
 
-        <Button x:Name="SAVE_INPUT" Content="SAVE" Margin="1090,15,0,0" RenderTransformOrigin="0.934,0.703" Background="#FF192DD8" Foreground="White" Click="SaveInput_Click" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="85"/>
+        <Button x:Name="ADMIN" Content="ADMIN" Margin="1090,15,0,0" RenderTransformOrigin="0.934,0.703" Background="DarkOrange" Foreground="White" Click="Admin_Options" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="85"/>
 
     </Grid>
 

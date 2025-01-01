@@ -9,15 +9,17 @@ using System.Windows.Media;
 
 
 /*
+ 
  * 
  * TODO: THE STOP BUTTON DOSE NOT STOP NODE.JS SERVER , NEED TO FIX IT
  * 
+ 
 */
 
 
 
 
-// ALL TESTED OUT
+
 namespace StartInterface {
 
     public partial class MainWindow : Window {
@@ -32,7 +34,6 @@ namespace StartInterface {
         string[] premadeData= {"PATH","PATH","PATH","example@gmail.com","Its should be a specific password generated for email sending!","IPV4 adress , as set on router virtual server(port-forward)","Port number set on virtual server(ex: 8080)"};
 
         // R/W TO DB
-        string?[] saveArray = { null, null, null, null, null, null, null };
         string?[] readArray;
 
         public MainWindow() {
@@ -125,7 +126,12 @@ namespace StartInterface {
         }
 
         // START BUTTON 
-        private void ButtonStart_Click(object sender, RoutedEventArgs e) {
+        private void ButtonStart_Click(object sender, RoutedEventArgs e) { // TODO: ADD THE OTHER db_verify script to run as a process!
+
+            DatabaseHandler db = new DatabaseHandler();
+            db.updateData(PRIVATE_KEY_PATH.Text, CERTIFICATE_PATH.Text, CHAIN_PATH.Text, EMAIL.Text, EMAIL_PASSWORD.Text, SERVER_HOSTNAME.Text, SERVER_PORT.Text);
+
+            MessageBox.Show("INPUT HAS BEEN SAVED!");
 
             if (nodeProcess == null) {
 
@@ -166,12 +172,9 @@ namespace StartInterface {
 
         }
 
-        private void SaveInput_Click(object sender, RoutedEventArgs e) {
+        private void Admin_Options(object sender, RoutedEventArgs e) {
 
-            DatabaseHandler db = new DatabaseHandler();
-            db.updateData(PRIVATE_KEY_PATH.Text,CERTIFICATE_PATH.Text, CHAIN_PATH.Text, EMAIL.Text, EMAIL_PASSWORD.Text, SERVER_HOSTNAME.Text, SERVER_PORT.Text);
-
-            MessageBox.Show("INPUT HAS BEEN SAVED!");
+            // HERE WE NEED TO OPEN ANOTHER SCREEN , TO DO THE ADMIN STUFF;
 
         }
 
