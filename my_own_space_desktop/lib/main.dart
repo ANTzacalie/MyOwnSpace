@@ -19,8 +19,8 @@ void main() async {
 
   if(connected != null && connected.isNotEmpty) {
 
-    //init = "/login3";
-    init = "/main";
+    init = "/login3";
+    //init = "/main";
     localAddress = connected[0]["ADDRESS"];
     localSessionId = connected[0]["SESSION_ID"];
 
@@ -1127,7 +1127,8 @@ class _MainAppScreen extends StatefulWidget {
 // MainAppScreen: The main phase of the app
 class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
-  List<Map<String, String>> data = [];
+  List<dynamic> data = [];
+  bool _myButtonHit = false;
 
   void fetchData() async {
 
@@ -1141,7 +1142,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
       final updatedData = await fetchAllFilesNames(); // Replace with your logic
 
-      if (updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "SUCCESS") {
+      if (updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "True") {
 
         setState(() {
 
@@ -1156,8 +1157,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
             const SnackBar(
 
               duration: Duration(seconds: 3),
-              content: Text(
-                  "Error in fetching data from server, check internet connection or try again later!"),
+              content: Text("Error in fetching data from server, check internet connection or try again later!"),
 
             )
 
@@ -1169,74 +1169,11 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
   }
 
-  Future<void> pickFile() async { // TO BE USED FOR FUTURE TRANSFER , WILL SEE THAT TOMORROW;
+  void fetchDataInit() async {
 
-    try {
+      final updatedData = await fetchAllFilesNames(); // Replace with your logic
 
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-      if (result != null) {
-
-        // Gets the selected file
-        PlatformFile file = result.files.first;
-
-        // Extract file name without extension
-        String fileNameWithoutExtension = getFileNameWithoutExtension(file.name);
-        String? fileExtension = file.extension;
-        String? fileSize = bytesToMBBase2(file.size).toString();
-
-
-        if (kDebugMode) {
-
-          print("File name: $fileNameWithoutExtension"); // full filename
-          print("File path: ${file.path}"); // file path
-          print("File size: $fileSize mb"); // size in bytes
-          print("File extension: ${file.extension}"); //  file extension
-
-        }
-
-      } else {
-
-        // User canceled the picker
-        if (kDebugMode) {
-
-          print("File picker was canceled.");
-
-        }
-
-      }
-
-    } catch (e) {
-
-      if (kDebugMode) {
-
-        print("Error picking file: $e");
-
-      }
-
-    }
-
-  }
-
-  double bytesToMBBase2(int bytes) {
-    return bytes / 1048576; // Divide by 2^20
-  }
-
-  String getFileNameWithoutExtension(String fileName) {
-
-    int lastDotIndex = fileName.lastIndexOf('.');
-    return (lastDotIndex != -1) ? fileName.substring(0, lastDotIndex) : fileName;
-
-  }
-
-  @override
-  void initState() {
-
-    super.initState();
-
-    fetchAllFilesNames().then((updatedData) {
-
-      if(updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "SUCCESS") {
+      if (updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "True") {
 
         setState(() {
 
@@ -1250,7 +1187,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
             const SnackBar(
 
-              duration: Duration(seconds: 5),
+              duration: Duration(seconds: 3),
               content: Text("Error in fetching data from server, check internet connection or try again later!"),
 
             )
@@ -1259,8 +1196,109 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
       }
 
+  }
+
+  Future<void> pickFile() async {
+
+    setState(() {
+      _myButtonHit = true;
     });
 
+    try {
+
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+      if (result != null) {
+
+        // TODO: ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+
+        // Gets the selected file
+        PlatformFile file = result.files.first;
+
+        // Extract file name without extension
+        String fileNameWithoutExtension = getFileNameWithoutExtension(file.name);
+        String? fileExtension = file.extension;
+        String? fileSize = bytesToMbBase2(file.size).toStringAsFixed(2);
+        String? filePath = file.path;
+
+        if (kDebugMode) {
+
+          print("File name: $fileNameWithoutExtension"); // full filename
+          print("File path: ${file.path}"); // file path
+          print("File size: $fileSize mb"); // size in bytes
+          print("File extension: ${file.extension}"); //  file extension
+
+        }
+
+        String? send = await addFile(file.name , fileNameWithoutExtension, fileExtension, fileSize, filePath);
+        await Future.delayed(const Duration(seconds: 1)); // Adjust the duration as needed
+
+        setState(() {
+          _myButtonHit = false;
+        });
+
+        if(send == "True") {
+
+          //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+
+        } else if(send == "False") {
+
+          //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+
+        } else {
+
+          //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+
+        }
+
+      } else {
+
+        // User canceled the picker
+        if (kDebugMode) {
+
+          print("File picker was canceled.");
+
+        }
+
+        //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+
+      }
+
+    } catch (e) {
+
+      if (kDebugMode) {
+
+        print("Error picking file: $e");
+
+      }
+
+      //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+      setState(() {
+        _myButtonHit = false;
+      });
+
+    }
+
+  }
+
+  double bytesToMbBase2(int bytes) {
+
+    return bytes / 1048576; // Divide by 2^20
+
+  }
+
+  String getFileNameWithoutExtension(String fileName) {
+
+    int lastDotIndex = fileName.lastIndexOf('.');
+    return (lastDotIndex != -1) ? fileName.substring(0, lastDotIndex) : fileName;
+
+  }
+
+  @override
+  void initState() {
+
+    super.initState();
+    fetchDataInit();
     fetchData();
 
   }
@@ -1307,14 +1345,14 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
       body: Stack(
 
           children: [
-            // Your main content here
+
+            // main content here , files
             ListView(
 
               children:
 
                 data.map((item) {
 
-                  // TODO: ADAUGA LOGICA DE MANIPULARE A FISIERELOR;
                   return buildCard(
 
                       item["FILE_NAME"]!,
@@ -1354,8 +1392,20 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
                 },
 
-                label: const Text('Add' , style: TextStyle(color: Colors.white),),
-                icon: const Icon(Icons.add, color: Colors.white,),
+                label: Text(
+                  _myButtonHit ? "Await..." : "Add",
+                  style: TextStyle(color: Colors.white),
+                ),
+
+                icon: _myButtonHit ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white, // Adjust color if needed
+                  ),
+
+                ) : const Icon(Icons.add, color: Colors.white),
 
               ),
 
@@ -1364,6 +1414,8 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
           ],
 
       ),
+
+      //TODO: ADAUGA UNDEVA UN TEXT SCROLL VIEW , IN CARE SA FIE LISTAT CE FACE APLICATIE IN MOMENTUL CURENT CU OPERATILE CARE USERUL LE POATE FACE LA FISIERE;
 
     );
 

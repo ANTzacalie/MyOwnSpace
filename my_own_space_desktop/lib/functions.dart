@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 
 // Used at the beginning of the app for the login process , also after for auth3 rec.
 String localEmail = "";
@@ -133,12 +135,148 @@ Future<String?> loginPhase3(String email , String password , String sessionId) a
 
 Future<List<dynamic>> fetchAllFilesNames() async {
 
-  //test
-  return [ {"RET_VALUE": "SUCCESS"} , [ {"FILE_NAME": "File1" , "FILE_DATE": "29/12/2024" , "FILE_TYPE": "JPG" , "FILE_SIZE": "78MB" , "FILE_ID": "NO_ID"} , {"FILE_NAME": "File2", "FILE_DATE": "29/12/2024" , "FILE_TYPE": "JPG" , "FILE_SIZE": "78MB" , "FILE_ID": "NO_ID"} , {"FILE_NAME": "File3", "FILE_DATE": "29/12/2024" , "FILE_TYPE": "JPG" , "FILE_SIZE": "78MB" , "FILE_ID": "NO_ID"} ] ];
+  if(kDebugMode) {
+
+    print("Fetching data from server.");
+
+  }
+
+  final data = {"email": localEmail, "session_id": localSessionId};
+
+  try {
+
+    final response = await http.post(
+
+      Uri.parse("$localAddress/fetch/file/names"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+
+    );
+
+    if (response.statusCode == 200) {
+
+      final responseBody = jsonDecode(response.body);
+      return responseBody;
+
+    }
+
+  } catch (e) {
+
+    return [{"RET_VALUE": "ERROR"}];
+
+  }
+
+
+  return [{"RET_VALUE": null}];
 
 }
 
+Future<String?> addFile(String fullFileName, String fileName, String? fileType, String fileSize , String? filePath) async {
 
+  try {
+
+    // transfer method and request method (multipart is used for file transfer);
+    var request = http.MultipartRequest(
+
+      'POST',
+      Uri.parse('$localAddress/upload'),
+
+    );
+
+    // Determine MIME type
+    String? mimeType = lookupMimeType(fullFileName); // Dynamically detect MIME type
+
+    // Add the file as a multipart field
+    request.files.add(
+
+      await http.MultipartFile.fromPath(
+
+        'file', // Name of the file field in the request, id
+        filePath!,
+        filename: fullFileName,
+        contentType: mimeType != null ? MediaType.parse(mimeType) : null,
+
+      ),
+
+    );
+
+    // Add metadata as JSON in a separate field
+    final metadata = {
+
+      'email' : localEmail,
+      'session_id': localSessionId,
+
+      'fileName': fileName,
+      'fileSize': fileSize,
+      'fileType': fileType,
+
+    };
+    request.fields['transport_info'] = jsonEncode(metadata);
+
+    // Send the request
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+
+      if (kDebugMode) {
+
+        print('File and transport_info uploaded successfully');
+
+      }
+
+      return "True";
+
+    } else {
+
+      if (kDebugMode) {
+
+        print('Failed to upload file and metadata: ${response.statusCode}');
+
+      }
+
+      return "False";
+
+    }
+
+  } catch (e) {
+
+    if (kDebugMode) {
+
+      print('Error uploading file and metadata: $e');
+
+    }
+
+    return "ERROR";
+
+  }
+
+}
+
+Future fetchFile() async {
+
+
+
+}
+
+Future renameFile() async {
+
+
+
+}
+
+Future deleteFile() async {
+
+
+
+}
+
+Future deleteAllFiles() async {
+
+
+
+}
 
 
 
