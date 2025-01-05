@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'database.dart';
 import 'functions.dart';
 
-
 // Main function - entry point of the app
 void main() async {
 
@@ -103,7 +102,7 @@ class _LoginScreenDynamic extends State<_LoginScreen> {
 
       String? data = await loginPhase1(email , password , address);
 
-      await Future.delayed(const Duration(seconds: 1)); // Adjust the duration as needed
+      await Future.delayed(const Duration(seconds: 1));
       setState(() {
 
         _myButtonHit = false;
@@ -429,21 +428,29 @@ class _LoginScreenDynamic extends State<_LoginScreen> {
               },
 
               label: Text(
+
                 _myButtonHit ? "Await..." : "Login",
+
               ),
 
               icon: _myButtonHit ? const SizedBox(
+
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(
+
                     strokeWidth: 2,
-                    color: Colors.white, // Adjust color if needed
+                    color: Colors.white,
+
                   ),
+
               ) : const Icon(Icons.login, color: Colors.white),
 
               style: TextButton.styleFrom(
+
                 foregroundColor: Colors.orange, // Button text/icon color
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+
               ),
 
             ),
@@ -485,7 +492,7 @@ class _LoginScreen2Dynamic extends State<_LoginScreen2> {
       });
 
       Map<String?, String?> data = await loginPhase2(localEmail , localAddress , code);
-      await Future.delayed(const Duration(seconds: 1)); // Adjust the duration as needed
+      await Future.delayed(const Duration(seconds: 1));
 
       setState(() {
 
@@ -738,21 +745,29 @@ class _LoginScreen2Dynamic extends State<_LoginScreen2> {
               },
 
               label: Text(
+
                 _myButtonHit ? "Await..." : "Verify Code",
+
               ),
 
               icon: _myButtonHit ? const SizedBox(
+
                 width: 16,
                 height: 16,
                 child: CircularProgressIndicator(
+
                   strokeWidth: 2,
-                  color: Colors.white, // Adjust color if needed
+                  color: Colors.white,
+
                 ),
+
               ) : const Icon(Icons.key, color: Colors.white),
 
               style: TextButton.styleFrom(
+
                 foregroundColor: Colors.orange, // Button text/icon color
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+
               ),
 
             ),
@@ -796,7 +811,7 @@ class _LoginScreen3Dynamic extends State<_LoginScreen3> {
       });
 
       String? data = await loginPhase3(email , password , localSessionId);
-      await Future.delayed(const Duration(seconds: 1)); // Adjust the duration as needed
+      await Future.delayed(const Duration(seconds: 1));
 
       setState(() {
 
@@ -1086,21 +1101,29 @@ class _LoginScreen3Dynamic extends State<_LoginScreen3> {
 
 
               label: Text(
+
                 _myButtonHit ? "Await..." : "Access",
+
               ),
 
               icon: _myButtonHit ? const SizedBox(
+
                 width: 16,
                 height: 16,
                 child: CircularProgressIndicator(
+
                   strokeWidth: 2,
-                  color: Colors.white, // Adjust color if needed
+                  color: Colors.white,
+
                 ),
+
               ) : const Icon(Icons.login, color: Colors.white),
 
               style: TextButton.styleFrom(
+
                 foregroundColor: Colors.orange, // Button text/icon color
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+
               ),
 
             ),
@@ -1140,7 +1163,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
       }
 
-      final updatedData = await fetchAllFilesNames(); // Replace with your logic
+      final updatedData = await fetchAllFilesNamesServer();
 
       if (updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "True") {
 
@@ -1149,19 +1172,6 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
           data = updatedData[1];
 
         });
-
-      } else {
-
-        ScaffoldMessenger.of(context).showSnackBar(
-
-            const SnackBar(
-
-              duration: Duration(seconds: 3),
-              content: Text("Error in fetching data from server, check internet connection or try again later!"),
-
-            )
-
-        );
 
       }
 
@@ -1171,7 +1181,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
   void fetchDataInit() async {
 
-      final updatedData = await fetchAllFilesNames(); // Replace with your logic
+      final updatedData = await fetchAllFilesNamesServer();
 
       if (updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "True") {
 
@@ -1187,8 +1197,8 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
             const SnackBar(
 
-              duration: Duration(seconds: 3),
-              content: Text("Error in fetching data from server, check internet connection or try again later!"),
+              duration: Duration(seconds: 2),
+              content: Text("Error in fetching data from server, check internet connection or try again later!", style: TextStyle(color: Colors.red)),
 
             )
 
@@ -1198,7 +1208,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
   }
 
-  Future<void> pickFile() async {
+  void pickFile() async {
 
     setState(() {
       _myButtonHit = true;
@@ -1209,8 +1219,6 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
       if (result != null) {
-
-        // TODO: ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
 
         // Gets the selected file
         PlatformFile file = result.files.first;
@@ -1223,15 +1231,15 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
         if (kDebugMode) {
 
-          print("File name: $fileNameWithoutExtension"); // full filename
+          print("File name: $fileNameWithoutExtension"); // filename without extension
           print("File path: ${file.path}"); // file path
           print("File size: $fileSize mb"); // size in bytes
           print("File extension: ${file.extension}"); //  file extension
 
         }
 
-        String? send = await addFile(file.name , fileNameWithoutExtension, fileExtension, fileSize, filePath);
-        await Future.delayed(const Duration(seconds: 1)); // Adjust the duration as needed
+        String? send = await addFileServer(file.name , fileNameWithoutExtension, fileExtension, fileSize, filePath);
+        await Future.delayed(const Duration(seconds: 1));
 
         setState(() {
           _myButtonHit = false;
@@ -1239,15 +1247,42 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
         if(send == "True") {
 
-          //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+          ScaffoldMessenger.of(context).showSnackBar(
+
+              SnackBar(
+
+                duration: Duration(seconds: 2),
+                content: Text("FILE: ${file.name}  SIZE: $fileSize MB, has been successfully uploaded to server." ),
+
+              )
+
+          );
 
         } else if(send == "False") {
 
-          //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+          ScaffoldMessenger.of(context).showSnackBar(
+
+              SnackBar(
+
+                duration: Duration(seconds: 2),
+                content: Text("Failed to upload file to server, FILE: ${file.name}  SIZE: $fileSize MB.", style: TextStyle(color: Colors.red)),
+
+              )
+
+          );
 
         } else {
 
-          //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+          ScaffoldMessenger.of(context).showSnackBar(
+
+              SnackBar(
+
+                duration: Duration(seconds: 2),
+                content: Text("Error in trying to upload file to server!, check internet connection or try again later." ),
+
+              )
+
+          );
 
         }
 
@@ -1260,7 +1295,20 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
         }
 
-        //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+        ScaffoldMessenger.of(context).showSnackBar(
+
+            SnackBar(
+
+              duration: Duration(seconds: 2),
+              content: Text("File picker was canceled, no file was selected."),
+
+            )
+
+        );
+
+        setState(() {
+          _myButtonHit = false;
+        });
 
       }
 
@@ -1272,7 +1320,17 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
       }
 
-      //ADAUGA setState pentru o variabila care va fi afisata in colt pe ecran la procedura curenta care se intampla;
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+
+            duration: Duration(seconds: 2),
+            content: Text("File picker experienced an error!, no file was selected, try again."),
+
+          )
+
+      );
+
       setState(() {
         _myButtonHit = false;
       });
@@ -1293,6 +1351,40 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
     return (lastDotIndex != -1) ? fileName.substring(0, lastDotIndex) : fileName;
 
   }
+
+  void renameFile() async {
+
+    /*
+    ScaffoldMessenger.of(context).showSnackBar(
+
+                            SnackBar(
+
+                              duration: Duration(microseconds: 300),
+                              content: Text("Renaming FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}", style: TextStyle(color: Colors.blue)),
+
+                            )
+
+                        );
+     */
+
+  }
+  void deleteFile() async {
+
+    /*
+    ScaffoldMessenger.of(context).showSnackBar(
+
+                            SnackBar(
+
+                              duration: Duration(microseconds: 300),
+                              content: Text("Deleting FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}", style: TextStyle(color: Colors.red)),
+
+                            )
+
+                        );
+     */
+
+  }
+
 
   @override
   void initState() {
@@ -1355,15 +1447,60 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
                   return buildCard(
 
-                      item["FILE_NAME"]!,
-                      item["FILE_DATE"]!,
-                      item["FILE_TYPE"]!,
-                      item["FILE_SIZE"]!,
-                      item["FILE_ID"]!,
+                      item["FILE_NAME"] ?? "NULL_NAME",
+                      item["FILE_DATE"] ?? "NULL_DATE",
+                      item["FILE_TYPE"] ?? "NULL_TYPE",
+                      item["FILE_SIZE"] ?? "NULL_SIZE",
+                      item["FILE_ID"] ?? "NULL_ID",
 
-                      () => print('Download the ${item['FILE_NAME']}'),
-                      () => print('Edit on ${item['FILE_NAME']}'),
-                      () => print('Delete the ${item['FILE_NAME']}')
+                      () {
+
+                        if (kDebugMode) {
+
+                          print('Downloading FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}');
+
+                        }
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+
+                            SnackBar(
+
+                              duration: Duration(milliseconds: 700),
+                              content: Text("Downloading FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}", style: TextStyle(color: Colors.green)),
+
+                            )
+
+                        );
+
+                      },
+                      () {
+
+                        if (kDebugMode) {
+
+                          print("Renaming FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}");
+
+                        }
+
+                        showRenameFileDialog(context, item['FILE_NAME'], (newFileName) {
+
+                            renameFile();
+
+                          },
+
+                        );
+
+                      },
+                      () {
+
+                        if (kDebugMode) {
+
+                          print("Deleting FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}");
+
+                        }
+
+                        deleteFile(); // TODO
+
+                      }
 
                   );
 
@@ -1380,7 +1517,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
               child: FloatingActionButton.extended(
 
                 backgroundColor: Colors.orange,
-                onPressed: () {
+                onPressed: !_myButtonHit ? () {
 
                   pickFile();
 
@@ -1390,19 +1527,24 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
                   }
 
-                },
+                } : null,
 
                 label: Text(
+
                   _myButtonHit ? "Await..." : "Add",
                   style: TextStyle(color: Colors.white),
+
                 ),
 
                 icon: _myButtonHit ? const SizedBox(
+
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(
+
                     strokeWidth: 2,
-                    color: Colors.white, // Adjust color if needed
+                    color: Colors.white,
+
                   ),
 
                 ) : const Icon(Icons.add, color: Colors.white),
@@ -1414,8 +1556,6 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
           ],
 
       ),
-
-      //TODO: ADAUGA UNDEVA UN TEXT SCROLL VIEW , IN CARE SA FIE LISTAT CE FACE APLICATIE IN MOMENTUL CURENT CU OPERATILE CARE USERUL LE POATE FACE LA FISIERE;
 
     );
 
@@ -1483,6 +1623,88 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
     );
 
   }
+
+  // required keyword must be added if this function becomes external or used by another non build function , the function under used callback( newFileName is the string variable returned by the onRename callback);
+  // this function can be made non-void and it will use await in the UI;
+  Future<void> showRenameFileDialog(BuildContext context, String initialFileName, Function(String newFileName) onRename) async {
+
+    final TextEditingController controller = TextEditingController(text: initialFileName);
+
+    await showDialog(
+
+      context: context,
+      builder: (BuildContext context) {
+
+        return AlertDialog(
+
+          title: Text('Rename File'),
+          content: TextField(
+
+            controller: controller,
+            decoration: InputDecoration(
+
+              labelText: 'New file name',
+              border: OutlineInputBorder(),
+
+            ),
+
+          ),
+
+          actions: [
+
+            TextButton(
+
+              onPressed: () {
+
+                Navigator.of(context).pop(); // Close dialog without action
+
+              },
+              child: Text('Cancel', style: TextStyle(color: Colors.red)),
+
+            ),
+
+            TextButton(
+
+              onPressed: () {
+
+                // controller.text.trim() is the text without white spaces
+                if (controller.text.trim().isNotEmpty) {
+
+                  onRename(controller.text.trim());
+                  Navigator.of(context).pop(); // Close dialog after renaming
+
+
+                } else {
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+
+                      SnackBar(
+
+                        duration: Duration(milliseconds: 700),
+                        content: Text("New file name cannot be empty!", style: TextStyle(color: Colors.red)),
+
+                      )
+
+                  );
+
+                }
+
+              },
+
+              child: Text('Rename', style: TextStyle(color: Colors.green)),
+
+            ),
+
+          ],
+
+        );
+
+      },
+
+    );
+
+  }
+
 
 }
 

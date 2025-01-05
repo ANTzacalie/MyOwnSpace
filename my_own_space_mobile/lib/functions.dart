@@ -133,7 +133,7 @@ Future<String?> loginPhase3(String email , String password , String sessionId) a
 
 }
 
-Future<List<dynamic>> fetchAllFilesNames() async {
+Future<List<dynamic>> fetchAllFilesNamesServer() async {
 
   if(kDebugMode) {
 
@@ -173,7 +173,7 @@ Future<List<dynamic>> fetchAllFilesNames() async {
 
 }
 
-Future<String?> addFile(String fullFileName, String fileName, String? fileType, String fileSize , String? filePath) async {
+Future<String?> addFileServer(String fullFileName, String fileName, String? fileType, String fileSize , String? filePath) async {
 
   try {
 
@@ -184,6 +184,13 @@ Future<String?> addFile(String fullFileName, String fileName, String? fileType, 
       Uri.parse('$localAddress/upload'),
 
     );
+
+    //this information is sent as headers because file will not be uploaded with user verification;
+    request.headers['email'] = localEmail;  //  email to headers
+    request.headers['session_id'] = localSessionId;  //  session_id to headers
+    request.headers['file_name'] = fileName;
+    request.headers['file_size'] = fileSize;
+    request.headers['file_type'] = fileType!;
 
     // Determine MIME type
     String? mimeType = lookupMimeType(fullFileName); // Dynamically detect MIME type
@@ -201,19 +208,6 @@ Future<String?> addFile(String fullFileName, String fileName, String? fileType, 
       ),
 
     );
-
-    // Add metadata as JSON in a separate field
-    final metadata = {
-
-      'email' : localEmail,
-      'session_id': localSessionId,
-
-      'fileName': fileName,
-      'fileSize': fileSize,
-      'fileType': fileType,
-
-    };
-    request.fields['transport_info'] = jsonEncode(metadata);
 
     // Send the request
     var response = await request.send();
@@ -254,25 +248,25 @@ Future<String?> addFile(String fullFileName, String fileName, String? fileType, 
 
 }
 
-Future fetchFile() async {
+Future fetchFileServer() async {
 
 
 
 }
 
-Future renameFile() async {
+Future renameFileServer() async {
 
 
 
 }
 
-Future deleteFile() async {
+Future deleteFileServer() async {
 
 
 
 }
 
-Future deleteAllFiles() async {
+Future deleteAllFilesServer() async {
 
 
 
