@@ -1,15 +1,28 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 
+
 // Used at the beginning of the app for the login process , also after for auth3 rec.
 String localEmail = "";
 String localAddress = "";
 String localSessionId = "";
+Directory? pathForStorage;
 
-// TODO TEST WITH SERVER!
+String generateRandomId(int length) {
+  const String chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-'; // Allowed characters for file names
+
+  final Random random = Random();
+  return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join();
+  
+}
+
 Future<String?> loginPhase1(String email , String password , String address) async {
 
   if (kDebugMode) {
@@ -192,6 +205,9 @@ Future<String?> addFileServer(String fullFileName, String fileName, String? file
     request.headers['file_size'] = fileSize;
     request.headers['file_type'] = fileType!;
 
+    String id = generateRandomId(18);
+    request.headers['file_id'] = id;
+
     // Determine MIME type
     String? mimeType = lookupMimeType(fullFileName); // Dynamically detect MIME type
 
@@ -202,7 +218,7 @@ Future<String?> addFileServer(String fullFileName, String fileName, String? file
 
         'file', // Name of the file field in the request, id
         filePath!,
-        filename: fullFileName,
+        filename: id + fullFileName,
         contentType: mimeType != null ? MediaType.parse(mimeType) : null,
 
       ),
@@ -216,17 +232,16 @@ Future<String?> addFileServer(String fullFileName, String fileName, String? file
 
       if (kDebugMode) {
 
-        print('File and transport_info uploaded successfully');
+        print('File and transport information uploaded successfully');
 
       }
-
       return "True";
 
     } else {
 
       if (kDebugMode) {
 
-        print('Failed to upload file and metadata: ${response.statusCode}');
+        print('Failed to upload file: ${response.statusCode}');
 
       }
 
@@ -238,7 +253,7 @@ Future<String?> addFileServer(String fullFileName, String fileName, String? file
 
     if (kDebugMode) {
 
-      print('Error uploading file and metadata: $e');
+      print('Error uploading file: $e');
 
     }
 
@@ -248,25 +263,95 @@ Future<String?> addFileServer(String fullFileName, String fileName, String? file
 
 }
 
-Future fetchFileServer() async {
+Future<bool> fetchFileFromServer(String fileName, fileType , String fileId) async {
+
+  if (kDebugMode) {
+    print(pathForStorage?.path);
+  }
+
+  String path = "";
+  if(Platform.isWindows) {
+
+    path = "${pathForStorage?.path}\\$fileName$fileId.$fileType";
+
+  } else {
+
+    path = "${pathForStorage?.path}/$fileName$fileId.$fileType";
+
+  }
+
+  final dio = Dio();
+
+  try {
+
+    final url = "$localAddress/download";
+
+    final response = await dio.download(
+
+      url,
+
+      path, // file path with full file_name;
+
+      queryParameters: {
+
+        'email': localEmail,
+        'session_id': localSessionId,
+        'file_name': fileName,
+        'file_id': fileId,
+
+      },
+
+    );
+
+    if (response.statusCode == 200) {
+
+      if (kDebugMode) {
+
+        print('File downloaded successfully and saved to $pathForStorage');
+
+      }
+
+      return true;
+
+    } else {
+
+      if (kDebugMode) {
+
+        print('Failed to download file: ${response.statusCode}');
+
+      }
+
+      return false;
+
+    }
+
+  } catch (e) {
+
+    if (kDebugMode) {
+
+      print('Error downloading file: $e');
+
+    }
+
+    return false;
+
+  }
+
+}
+
+Future renameFileOnServer() async {
 
 
 
 }
 
-Future renameFileServer() async {
+Future deleteFileOnServer() async {
 
 
 
 }
 
-Future deleteFileServer() async {
-
-
-
-}
-
-Future deleteAllFilesServer() async {
+Future deleteAllFilesOnServer() async {
 
 
 

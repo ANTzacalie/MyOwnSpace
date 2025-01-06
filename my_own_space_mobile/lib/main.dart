@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'database.dart';
 import 'functions.dart';
 
@@ -22,6 +26,16 @@ void main() async {
     //init = "/main";
     localAddress = connected[0]["ADDRESS"];
     localSessionId = connected[0]["SESSION_ID"];
+
+  }
+
+  if (Platform.isLinux || Platform.isWindows) {
+
+    pathForStorage = await getDownloadsDirectory();
+
+  } else if (Platform.isMacOS) {
+
+    pathForStorage = await getApplicationDocumentsDirectory();
 
   }
 
@@ -1258,6 +1272,8 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
           );
 
+          fetchDataInit();
+
         } else if(send == "False") {
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -1352,14 +1368,71 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
   }
 
+  void downloadFile(String fileName, String fileType ,String fileId) async {
+
+    bool response = await fetchFileFromServer(fileName, fileType, fileId);
+
+    if(response == true) {
+
+      if(Platform.isAndroid) {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+
+            SnackBar(
+
+              duration: Duration(seconds: 1),
+              content: Text(
+                  "FILE: $fileName ID: $fileId has been successfully downloaded and placed in /storage/emulated/0/Download.",
+                  style: TextStyle(color: Colors.green)),
+
+            )
+
+        );
+
+      } else {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+
+            SnackBar(
+
+              duration: Duration(seconds: 1),
+              content: Text(
+                  "FILE: $fileName ID: $fileId has been successfully downloaded.",
+                  style: TextStyle(color: Colors.green)),
+
+            )
+
+        );
+
+      }
+
+    } else {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+
+            duration: Duration(seconds: 2),
+            content: Text("FILE: $fileName ID: $fileId has not been downloaded because of an error or not enough privileges to store file, try run admin.", style: TextStyle(color: Colors.red)),
+
+          )
+
+      );
+
+    }
+
+  }
+
   void renameFile() async {
+
+
 
     /*
     ScaffoldMessenger.of(context).showSnackBar(
 
                             SnackBar(
 
-                              duration: Duration(microseconds: 300),
+                              duration: Duration(seconds: 1),
                               content: Text("Renaming FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}", style: TextStyle(color: Colors.blue)),
 
                             )
@@ -1368,6 +1441,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
      */
 
   }
+
   void deleteFile() async {
 
     /*
@@ -1375,7 +1449,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
                             SnackBar(
 
-                              duration: Duration(microseconds: 300),
+                              duration: Duration(seconds: 1),
                               content: Text("Deleting FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}", style: TextStyle(color: Colors.red)),
 
                             )
@@ -1445,10 +1519,18 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
                 data.map((item) {
 
+                  String fullDateTime = "NO_DATE";
+                  if(item["FILE_DATE"] > 0) {
+
+                    DateTime dateInMilliseconds = DateTime.fromMillisecondsSinceEpoch(item["FILE_DATE"]);
+                    fullDateTime = DateFormat('dd/MM/yyyy HH:mm').format(dateInMilliseconds);
+
+                  }
+
                   return buildCard(
 
                       item["FILE_NAME"] ?? "NULL_NAME",
-                      item["FILE_DATE"] ?? "NULL_DATE",
+                      fullDateTime,
                       item["FILE_TYPE"] ?? "NULL_TYPE",
                       item["FILE_SIZE"] ?? "NULL_SIZE",
                       item["FILE_ID"] ?? "NULL_ID",
@@ -1471,6 +1553,8 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
                             )
 
                         );
+
+                        downloadFile(item["FILE_NAME"], item["FILE_TYPE"] , item["FILE_ID"]);
 
                       },
                       () {

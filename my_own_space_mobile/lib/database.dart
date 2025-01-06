@@ -21,13 +21,13 @@ class DatabaseHelper {
 
     }
 
-    _database = await _initDatabase();
+    _database = await initDatabase();
 
     return _database!;
 
   }
 
-  Future<Database> _initDatabase() async {
+  Future<Database> initDatabase() async {
 
     final directory = await getApplicationDocumentsDirectory();
     final dbPath = '${directory.path}/app_database.db'; // Database file path
@@ -41,7 +41,6 @@ class DatabaseHelper {
            ADDRESS TEXT NOT NULL
        )
     ''');
-
 
     return db;
 
@@ -87,6 +86,7 @@ class DatabaseHelper {
     final db = await database;
 
     db.execute('DROP TABLE IF EXISTS user');
+
   }
 
 }
