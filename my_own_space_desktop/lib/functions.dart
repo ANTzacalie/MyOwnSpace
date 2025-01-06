@@ -142,7 +142,7 @@ Future<String?> loginPhase3(String email , String password , String sessionId) a
 
   }
 
-  return null; // Return error in case of an server error
+  return null; // Return error in case of an server error not responding
 
 }
 
@@ -339,21 +339,99 @@ Future<bool> fetchFileFromServer(String fileName, fileType , String fileId) asyn
 
 }
 
-Future renameFileOnServer() async {
+Future<bool> renameFileOnServer(String fileName, String fileId, String newFileName) async {
 
+  final data = {"email": localEmail, "session_id": localSessionId , "reason": "rename", "file_name": fileName, "file_id": fileId, "new_file_name": newFileName};
 
+  try {
+
+    final response = await http.post(
+
+      Uri.parse("$localAddress/multi/onFile"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+
+    );
+
+    if (response.statusCode == 200) {
+
+      return true;
+
+    }
+
+  } catch (e) {
+
+    return false;
+
+  }
+
+  return false; // Return false in case of an server not responding
 
 }
 
-Future deleteFileOnServer() async {
+Future<bool> deleteFileOnServer(String fileName, String fileId) async {
 
+  final data = {"email": localEmail, "session_id": localSessionId , "reason": "delete", "file_name": fileName, "file_id": fileId, "new_file_name": " "};
 
+  try {
+
+    final response = await http.post(
+
+      Uri.parse("$localAddress/multi/onFile"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+
+    );
+
+    if (response.statusCode == 200) {
+
+      return true;
+
+    }
+
+  } catch (e) {
+
+    return false;
+
+  }
+
+  return false; // Return false in case of an server not responding
 
 }
 
-Future deleteAllFilesOnServer() async {
+Future<bool> deleteAllFilesOnServer() async {
 
+  final data = {"email": localEmail, "session_id": localSessionId , "reason": "delete_all", "file_name": " ", "file_id": " ", "new_file_name": " "};
 
+  try {
+
+    final response = await http.post(
+
+      Uri.parse("$localAddress/multi/onFile"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+
+    );
+
+    if (response.statusCode == 200) {
+
+      return true;
+
+    }
+
+  } catch (e) {
+
+    return false;
+
+  }
+
+  return false; // Return false in case of an server not responding
 
 }
 

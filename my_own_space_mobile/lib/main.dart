@@ -23,7 +23,6 @@ void main() async {
   if(connected != null && connected.isNotEmpty) {
 
     init = "/login3";
-    //init = "/main";
     localAddress = connected[0]["ADDRESS"];
     localSessionId = connected[0]["SESSION_ID"];
 
@@ -77,7 +76,6 @@ class MyApp extends StatelessWidget {
         '/main': (context) => _MainAppScreen(), // Main app screen
         '/settings': (context) => _SettingsScreen(), // Settings screen
         '/about': (context) => _AboutApp(), // About App
-        /* MORE ACTIVITIES WILL BE ADDED AS FOR SETTINGS WILL BE FINISHED */
 
       },
 
@@ -1423,39 +1421,87 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
   }
 
-  void renameFile() async {
+  void renameFile(String fileName, String fileId, String newFileName, String fileSize) async {
 
-
-
-    /*
     ScaffoldMessenger.of(context).showSnackBar(
 
-                            SnackBar(
+        SnackBar(
 
-                              duration: Duration(seconds: 1),
-                              content: Text("Renaming FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}", style: TextStyle(color: Colors.blue)),
+          duration: Duration(seconds: 1),
+          content: Text("Renaming FILE: $fileName SIZE: $fileSize", style: TextStyle(color: Colors.blue)),
 
-                            )
+        )
 
-                        );
-     */
+    );
+
+    bool response = await renameFileOnServer(fileName, fileId, newFileName);
+
+    if(response) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+
+            duration: Duration(seconds: 1),
+            content: Text("FILE: $fileName SIZE: $fileSize has been successfully renamed.", style: TextStyle(color: Colors.green)),
+
+          )
+
+      );
+
+      fetchDataInit();
+
+    } else {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+
+            duration: Duration(seconds: 2),
+            content: Text("FILE: $fileName SIZE: $fileSize ,failed to rename file on server due to an error.", style: TextStyle(color: Colors.red)),
+
+          )
+
+      );
+
+    }
 
   }
 
-  void deleteFile() async {
+  void deleteFile(String fileName, String fileId , String fileSize) async {
 
-    /*
-    ScaffoldMessenger.of(context).showSnackBar(
+    bool response = await deleteFileOnServer(fileName, fileId);
 
-                            SnackBar(
+    if(response) {
 
-                              duration: Duration(seconds: 1),
-                              content: Text("Deleting FILE: ${item['FILE_NAME']} SIZE: ${item['FILE_SIZE']}", style: TextStyle(color: Colors.red)),
+      ScaffoldMessenger.of(context).showSnackBar(
 
-                            )
+          SnackBar(
 
-                        );
-     */
+            duration: Duration(seconds: 1),
+            content: Text("FILE: $fileName SIZE: $fileSize was successfully deleted.", style: TextStyle(color: Colors.orange)),
+
+          )
+
+      );
+
+      fetchDataInit();
+
+    } else {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+
+            duration: Duration(seconds: 2),
+            content: Text("FILE: $fileName SIZE: $fileSize has not been deleted on server because of an error.", style: TextStyle(color: Colors.red)),
+
+          )
+
+      );
+
+    }
+
 
   }
 
@@ -1567,14 +1613,14 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
                         showRenameFileDialog(context, item['FILE_NAME'], (newFileName) {
 
-                            renameFile();
+                          renameFile(item["FILE_NAME"], item["FILE_ID"], newFileName, item["FILE_SIZE"]);
 
-                          },
+                        },
 
                         );
 
                       },
-                      () {
+                          () {
 
                         if (kDebugMode) {
 
@@ -1582,7 +1628,13 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
                         }
 
-                        deleteFile(); // TODO
+                        deleteFileDialog(context, item['FILE_NAME'], (delete) {
+
+                          deleteFile(item['FILE_NAME'] , item['FILE_ID'], item['FILE_SIZE']);
+
+                        },
+
+                        );
 
                       }
 
@@ -1776,6 +1828,54 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
               },
 
               child: Text('Rename', style: TextStyle(color: Colors.green)),
+
+            ),
+
+          ],
+
+        );
+
+      },
+
+    );
+
+  }
+
+  Future<void> deleteFileDialog(BuildContext context, String fileName, Function(bool delete) onDelete) async {
+
+    await showDialog(
+
+      context: context,
+      builder: (BuildContext context) {
+
+        return AlertDialog(
+
+          title: Text('Delete File'),
+          content: Text(fileName),
+
+          actions: [
+
+            TextButton(
+
+              onPressed: () {
+
+                Navigator.of(context).pop(); // Close dialog without action
+
+              },
+              child: Text('Cancel', style: TextStyle(color: Colors.green)),
+
+            ),
+
+            TextButton(
+
+              onPressed: () {
+
+                onDelete(true);
+                Navigator.of(context).pop(); // Close dialog after renaming
+
+              },
+
+              child: Text('Delete', style: TextStyle(color: Colors.red)),
 
             ),
 
