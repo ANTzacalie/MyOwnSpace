@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
   final String initialRoute;
   const MyApp({super.key, required this.initialRoute});
 
-  // The build method describes how the widget looks
+  // The build method
   @override
 
   Widget build(BuildContext context) {

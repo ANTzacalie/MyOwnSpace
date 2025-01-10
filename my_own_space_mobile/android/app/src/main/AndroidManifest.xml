@@ -8,7 +8,7 @@
 
     <application
 
-        android:label="my_own_space_mobile"
+        android:label="MyOwnSpace"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

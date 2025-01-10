@@ -29,7 +29,7 @@ class DatabaseHelper {
 
   Future<Database> initDatabase() async {
 
-    final directory = await getApplicationDocumentsDirectory();
+    final directory = await getApplicationSupportDirectory();
     final dbPath = '${directory.path}/app_database.db'; // Database file path
 
     final db = sqlite3.open(dbPath); // Open SQLite database at the specified path

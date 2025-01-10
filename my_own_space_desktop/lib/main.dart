@@ -17,7 +17,7 @@ void main() async {
   final db = DatabaseHelper();
   List<Map<String,dynamic>>? connected = await db.getUserCredentials();
 
-  String init = "/login";
+  String init = "/settings";
 
   if(connected != null && connected.isNotEmpty) {
 
@@ -28,9 +28,13 @@ void main() async {
 
   }
 
-  if (Platform.isAndroid || Platform.isLinux || Platform.isWindows) {
+  if (Platform.isLinux || Platform.isWindows) {
 
     pathForStorage = await getDownloadsDirectory();
+
+  } else if(Platform.isMacOS) {
+
+    pathForStorage = await getApplicationDocumentsDirectory();
 
   }
 
@@ -44,7 +48,7 @@ class MyApp extends StatelessWidget {
   final String initialRoute;
   const MyApp({super.key, required this.initialRoute});
 
-  // The build method describes how the widget looks
+  // The build method
   @override
 
   Widget build(BuildContext context) {
