@@ -9,7 +9,6 @@ import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'main.dart';
 
 
 // Used at the beginning of the app for the login process , also after for auth3 rec.
@@ -299,7 +298,6 @@ Future<bool> fetchFileFromServer(String fileName, fileType , String fileId) asyn
 
   } else if(Platform.isIOS) {
 
-    //to be implemnted
     Directory? dir = await getApplicationDocumentsDirectory();
     path = dir.path;
 

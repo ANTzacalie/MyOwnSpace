@@ -28,16 +28,6 @@ void main() async {
 
   }
 
-  if (Platform.isLinux || Platform.isWindows) {
-
-    pathForStorage = await getDownloadsDirectory();
-
-  } else if (Platform.isMacOS) {
-
-    pathForStorage = await getApplicationDocumentsDirectory();
-
-  }
-
   runApp(MyApp(initialRoute: init)); // This runs the MyApp widget
 
 }
@@ -76,6 +66,8 @@ class MyApp extends StatelessWidget {
         '/main': (context) => _MainAppScreen(), // Main app screen
         '/settings': (context) => _SettingsScreen(), // Settings screen
         '/about': (context) => _AboutApp(), // About App
+        '/download': (context) => _Downloads(),
+        '/license': (context) => _License(),
 
       },
 
@@ -1536,7 +1528,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
           IconButton(
 
-            icon: const Icon(Icons.settings , color: Colors.white), // Settings icon in the app bar
+            icon: const Icon(Icons.settings_outlined , color: Colors.white), // Settings icon in the app bar
 
             onPressed: () {
 
@@ -1892,21 +1884,93 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
 
 }
 
-// SettingsScreen: The settings phase of the app
-class _SettingsScreen extends StatelessWidget {
-  @override
 
+
+class _SettingsScreen extends StatefulWidget {
+
+  @override
+  _SettingsScreenDynamic createState() => _SettingsScreenDynamic();
+
+}
+
+// SettingsScreen
+class _SettingsScreenDynamic extends State<_SettingsScreen> {
+
+  bool _myButtonHit = false;
+
+  void destroyAllFiles() async {
+
+    setState(() {
+
+      _myButtonHit = true;
+
+    });
+
+    bool response = await deleteAllFilesOnServer();
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+
+      _myButtonHit = false;
+
+    });
+
+    if(response) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+
+            duration: Duration(seconds: 3),
+            content: Text("All files on server were successfully deleted.", style: TextStyle(color: Colors.orange)),
+
+          )
+
+      );
+
+    } else {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(
+
+            duration: Duration(seconds: 5),
+            content: Text("Unable to delete all files on server, some files my be deleted, for more info contact admin.", style: TextStyle(color: Colors.red)),
+
+          )
+
+      );
+
+    }
+
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     return Scaffold(
 
+      backgroundColor: Colors.black,
       // App bar for settings
       appBar: AppBar(
+
+        backgroundColor: Colors.orange,
+
+        leading: IconButton(
+
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+          onPressed: () {
+
+            Navigator.of(context).pop();//pushNamed(context, '/main');
+
+          },
+
+        ),
 
         title: const Text(
 
             'Settings',
-            style: TextStyle(fontSize: 30)
+            style: TextStyle(fontSize: 30, color: Colors.white)
 
         ),
 
@@ -1914,9 +1978,15 @@ class _SettingsScreen extends StatelessWidget {
 
       body: Center(
 
-        child: Column (
+        child: ListView (
 
           children: [
+
+            const SizedBox(height: 50),
+
+            Icon(Icons.settings_outlined, size: 200, color: Colors.white),
+
+            Align (child: Text("Settings", style: TextStyle(color: Colors.white, fontSize: 35)),),
 
             const SizedBox(height: 50),
 
@@ -1926,15 +1996,15 @@ class _SettingsScreen extends StatelessWidget {
 
               child: TextButton.icon(
 
-                onPressed: () {
+                onPressed: _myButtonHit ? null : () {
 
-                  // Navigate to the settings screen
-                  Navigator.pushNamed(context, '/about');
+                  //Navigate to the about myOwnSpace, where are licenses are , as well as additional info etc...
+                  Navigator.pushNamed(context, '/download');
 
                 },
 
-                icon: const Icon(Icons.circle), // The icon
-                label: const Text('About the app'), // The text
+                icon: const Icon(Icons.file_download_outlined, color: Colors.orange,), // The icon
+                label: const Text('Downloads', style: TextStyle(color: Colors.white, fontSize: 28), textAlign: TextAlign.left,), // The text
 
               ),
 
@@ -1944,19 +2014,98 @@ class _SettingsScreen extends StatelessWidget {
 
             Align (
 
-              alignment: Alignment.centerLeft ,
-
+              alignment: Alignment.centerLeft,
               child: TextButton.icon(
 
-                onPressed: () {
+                onPressed: _myButtonHit ? null : () {
 
-                  // Navigate to the settings screen
-                  //Navigator.pushNamed(context, '/about');
+                  signOutDialog(context, (onExit) {
+
+                    DatabaseHelper().deleteAll();
+                    Navigator.pushAndRemoveUntil(
+
+                      context,
+                      MaterialPageRoute(builder: (context) => _LoginScreen()), // first screen widget
+                          (route) => false, // Remove all previous routes
+
+                    );
+
+                  }
+
+                  );
 
                 },
 
-                icon: const Icon(Icons.circle), // The icon
-                label: const Text('Get smoked gangsta! '), // The text
+                icon: const Icon(Icons.logout_outlined, color: Colors.orange,), // The icon
+                label: const Text('Sign Out', style: TextStyle(color: Colors.white, fontSize: 28), textAlign: TextAlign.left,), // The text
+
+              ),
+
+            ),
+
+            const SizedBox(height: 15),
+
+            Align (
+
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+
+                onPressed: _myButtonHit ? null : () {
+
+                  deleteFileDialog(context, (onDelete) {
+
+                    deleteAllFilesOnServer();
+
+                  }
+
+                  );
+
+                },
+
+                icon: const Icon(Icons.delete_outlined, color: Colors.orange,), // The icon
+                label: const Text('Remove all Files', style: TextStyle(color: Colors.white, fontSize: 28), textAlign: TextAlign.left,), // The text
+
+              ),
+
+            ),
+
+            const SizedBox(height: 15),
+
+            Align (
+
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+
+                onPressed: _myButtonHit ? null : () {
+
+                  //Navigate to the about myOwnSpace, where are licenses are , as well as aditional info etc...
+                  Navigator.pushNamed(context, '/about');
+
+                },
+
+                icon: const Icon(Icons.favorite_border_outlined, color: Colors.orange,), // The icon
+                label: const Text('About MyOwnSpace', style: TextStyle(color: Colors.white, fontSize: 28), textAlign: TextAlign.left,), // The text
+
+              ),
+
+            ),
+
+            const SizedBox(height: 15),
+
+            Align (
+
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+
+                onPressed: _myButtonHit ? null : () {
+
+                  //Navigate to the about myOwnSpace, where are licenses are , as well as additional info etc...
+                  Navigator.pushNamed(context, '/license');
+
+                },
+
+                icon: const Icon(Icons.info_outlined, color: Colors.orange), // The icon
+                label: const Text('Legal Information', style: TextStyle(color: Colors.white, fontSize: 28), textAlign: TextAlign.left,), // The text
 
               ),
 
@@ -1966,9 +2115,105 @@ class _SettingsScreen extends StatelessWidget {
 
           ],
 
-       ),
+        ),
 
       ),
+
+    );
+
+  }
+
+  Future<void> deleteFileDialog(BuildContext context, Function(bool delete) onDelete) async {
+
+    await showDialog(
+
+      context: context,
+      builder: (BuildContext context) {
+
+        return AlertDialog(
+
+          title: Text('Delete Files'),
+          content: Text("All file on server will be deleted!", style: TextStyle(color: Colors.red),),
+
+          actions: [
+
+            TextButton(
+
+              onPressed: () {
+
+                Navigator.of(context).pop(); // Close dialog without action
+
+              },
+              child: Text('Cancel', style: TextStyle(color: Colors.green)),
+
+            ),
+
+            TextButton(
+
+              onPressed: () {
+
+                onDelete(true);
+                Navigator.of(context).pop(); // Close dialog after renaming
+
+              },
+
+              child: Text('Delete', style: TextStyle(color: Colors.red)),
+
+            ),
+
+          ],
+
+        );
+
+      },
+
+    );
+
+  }
+
+  Future<void> signOutDialog(BuildContext context, Function(bool exit) onExit) async {
+
+    await showDialog(
+
+      context: context,
+      builder: (BuildContext context) {
+
+        return AlertDialog(
+
+          title: Text('Sign Out'),
+          content: Text("You will be redirected back to login!", style: TextStyle(color: Colors.red),),
+
+          actions: [
+
+            TextButton(
+
+              onPressed: () {
+
+                Navigator.of(context).pop(); // Close dialog without action
+
+              },
+              child: Text('Cancel', style: TextStyle(color: Colors.green)),
+
+            ),
+
+            TextButton(
+
+              onPressed: () {
+
+                onExit(true);
+                Navigator.of(context).pop(); // Close dialog after renaming
+
+              },
+
+              child: Text('Sign out', style: TextStyle(color: Colors.red)),
+
+            ),
+
+          ],
+
+        );
+
+      },
 
     );
 
@@ -1977,40 +2222,344 @@ class _SettingsScreen extends StatelessWidget {
 }
 
 class _AboutApp extends StatelessWidget {
+
+  final text = """ 
+  MIT License
+
+  Copyright (c) 2025 Mihalcea Catalin Antonio
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  """;
+
   @override
 
   Widget build(BuildContext context) {
 
     return Scaffold(
 
+      backgroundColor: Colors.black,
       // App bar for settings
       appBar: AppBar(
+
+        backgroundColor: Colors.orange,
+
+        leading: IconButton(
+
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+          onPressed: () {
+
+            Navigator.of(context).pop();
+
+          },
+
+        ),
 
         title: const Text(
 
             'About the app',
-            style: TextStyle(fontSize: 30)
+            style: TextStyle(fontSize: 30, color: Colors.white)
 
-        ), // Title of the settings screen
+        ),
 
       ),
 
-      body: const Center(
+      body: Stack(
 
-        child: Column(
+        children: [
 
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
+          Positioned(
 
-            Text(
+              left: 50,
+              top: 50,
+              child: Text("MyOwnSpace", style: TextStyle(color: Colors.white, fontSize: 35),)
 
-              'About the app: ', // Text displayed on the settings screen
-              style: TextStyle(fontSize: 38), // Font size for this text
+          ),
+
+          Positioned(
+
+              top: 130,
+              child: SelectableText(""" 
+Dev
+Hi! I’m a developer working under the username @ANTzacalie on GitHub. 
+You can explore my work, including this app, on my GitHub repository page.
+
+App
+This app, built using Flutter, is designed for cloud storage and for 
+people who want a seamless experience across platforms.
+
+Platform
+  Supported for [Android, IOS].
+
+Version Information
+  Currently running on v1.0.0 release.
+
+Explore more about my projects here: 
+  github.com/ANTzacalie/MyOwnSpace?tab=readme-ov-file.
+
+Thank you for using the app ❤️!
+              """, style: TextStyle(color: Colors.white, fontSize: 12))
+
+          ),
+
+          Positioned(
+
+            top: 460,
+            child: TextButton.icon(
+
+              onPressed: () {
+
+                alertDialog(context, text);
+
+              },
+
+              icon: const Icon(Icons.article_outlined, color: Colors.orange), // The icon
+              label: const Text('License', style: TextStyle(color: Colors.white, fontSize: 23), textAlign: TextAlign.left,), // The text
 
             ),
 
+          )
+
+        ],
+
+      ),
+
+    );
+
+  }
+
+  Future<void> alertDialog(BuildContext context, String text) async {
+
+    await showDialog(
+
+      context: context,
+      builder: (BuildContext context) {
+
+        return AlertDialog(
+
+          title: Text('License'),
+          content: SelectableText(text, style: TextStyle(color: Colors.blue),),
+
+          actions: [
+
+            TextButton(
+
+              onPressed: () {
+
+                Navigator.of(context).pop(); // Close dialog after renaming
+
+              },
+
+              child: Text('Back', style: TextStyle(color: Colors.red)),
+
+            ),
 
           ],
+
+        );
+
+      },
+
+    );
+
+  }
+
+
+}
+
+class _Downloads extends StatelessWidget {
+
+  Future<String> requestFileAccess() async {
+
+    if (await Permission.manageExternalStorage.request().isGranted) {
+      // Permission granted for Android 11 and above
+      if (kDebugMode) {
+        print("Permission granted to manage external storage");
+      }
+
+      return "/storage/emulated/0/Download";
+
+    } else {
+
+      if (kDebugMode) {
+        print("Permission not granted");
+      }
+
+      return "";
+
+    }
+
+  }
+
+  Future<String> getText() async{
+
+    String path;
+
+    if(Platform.isAndroid) {
+
+      path = await requestFileAccess();
+
+      return path;
+    } else if(Platform.isIOS) {
+
+      Directory? dir = await getApplicationDocumentsDirectory();
+      path = dir.path;
+
+      return path;
+
+    } else {
+
+      return "NO_PATH";
+
+    }
+
+  }
+
+  @override
+
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+
+      backgroundColor: Colors.black,
+      // App bar for settings
+      appBar: AppBar(
+
+        backgroundColor: Colors.orange,
+
+        leading: IconButton(
+
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+          onPressed: () {
+
+            Navigator.of(context).pop();
+
+          },
+
+        ),
+
+        title: const Text(
+
+            'Downloads',
+            style: TextStyle(fontSize: 30, color: Colors.white)
+
+        ),
+
+      ),
+
+      body: Center(
+
+        child:
+
+        Column(
+
+          children: [
+
+            Align(
+
+              child: SizedBox(height: 25,),
+
+            ),
+
+            Align(
+
+                alignment: Alignment.centerLeft,
+                child: SelectableText("""Folder where downloaded files are can be found at: ${getText()}""", style: TextStyle(color: Colors.white, fontSize: 24))
+
+            ),
+
+            Align(
+
+                child: SizedBox(height: 25,),
+
+            ),
+
+            Align(
+
+                alignment: Alignment.centerLeft,
+                child: SelectableText("""If there is no files in folder it means necessary permissions for file storage has not been given.""", style: TextStyle(color: Colors.white, fontSize: 16))
+
+
+            )
+
+          ],
+
+        ),
+
+      ),
+
+    );
+
+  }
+
+
+}
+
+class _License extends StatelessWidget {
+  @override
+
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+
+        backgroundColor: Colors.orange,
+
+        leading: IconButton(
+
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+          onPressed: () {
+
+            Navigator.of(context).pop();
+
+          },
+
+        ),
+
+        title: const Text(
+
+            'Licenses',
+            style: TextStyle(fontSize: 30, color: Colors.white)
+
+        ),
+
+      ),
+
+      body: Center(
+
+        child: ElevatedButton(
+
+          onPressed: () {
+
+            // Show built-in Flutter licenses page
+            showLicensePage(
+              context: context,
+              applicationName: 'MyOwnSpace',
+              applicationVersion: '1.0.0',
+              applicationIcon: Icon(Icons.cloud),
+
+            );
+
+          },
+
+          child: Text('View Licenses', style: TextStyle(color: Colors.black),),
 
         ),
 
