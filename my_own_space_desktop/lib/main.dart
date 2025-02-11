@@ -17,7 +17,7 @@ void main() async {
   final db = DatabaseHelper();
   List<Map<String,dynamic>>? connected = await db.getUserCredentials();
 
-  String init = "/settings";
+  String init = "/login";
 
   if(connected != null && connected.isNotEmpty) {
 
