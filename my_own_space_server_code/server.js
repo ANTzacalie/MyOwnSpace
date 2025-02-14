@@ -995,6 +995,7 @@ try {
 
             app.get("/download", async(request, response) => {
 
+                // request.query is used to get the query parameters from the url only on GET requests
                 const { email, session_id, file_name, file_id } = request.query;
                 const ip = request.ip; addIp(ip);
               
