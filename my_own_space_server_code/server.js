@@ -6,6 +6,7 @@ const crypto = require("crypto");
 const sqlite3 = require("sqlite3").verbose();
 const nodemailer = require("nodemailer");
 const { call } = require("function-bind");
+const path = require("path");
 const { EMPTY } = require("sqlite3");
 
 const dbOnePath = "admin_db.sqlite";
@@ -87,6 +88,7 @@ try {
 
             const app = express() //Here we initialize the application with Express for HTTPS Request
             app.use(express.json()); //tells the app how to parse json
+            app.use('/', express.static(path.join(__dirname, 'my_own_space_web'))); //tells the app where to find the static files
             
             const server = https.createServer({ // https server
 
@@ -99,8 +101,6 @@ try {
 
             function emailSender(email, code) {
 
-                console.log(date() + " and code: " + code);
-
                 //Create a transporter with your SMTP configuration
                 const transporter = nodemailer.createTransport({
 
@@ -108,7 +108,7 @@ try {
                     auth: {
 
                         user: readData[3],
-                        pass: readData[4] //ducz gjxz khry lfio
+                        pass: readData[4] 
 
                     }
 
@@ -155,8 +155,6 @@ try {
 
                 }
 
-                console.log("Code generated is: " + password);
-
                 return password;
 
             }
@@ -172,9 +170,6 @@ try {
                 try{
 
                     let stringHash = makeHash(string);
-
-                    console.log("Password Hash: " + stringHash + '\n');
-                    console.log("Hash from db: " + db_hash + '\n');
 
                     if(stringHash === db_hash) {
 
@@ -237,7 +232,6 @@ try {
                             
                         if(rows.FILE_NAME != null) {
 
-                            console.log("FILE: " + rows.FILE_NAME + " with PATH: " + rows.FILE_URI);
                             callback(rows);
 
                         } else {
@@ -815,8 +809,6 @@ try {
                 const { email, session_id, file_name, file_id, new_file_name, reason } = request.body;
                 const ip = request.ip; addIp(ip);
               
-                console.log("MULTI_ON_FILES used for ip: " + ip);
-
                 checkSesionOpen(ip, email, (result) => {
 
                     if(result == true) {
@@ -999,15 +991,11 @@ try {
                 const { email, session_id, file_name, file_id } = request.query;
                 const ip = request.ip; addIp(ip);
               
-                console.log("DOWNLOAD_OF_DATA used for ip: " + ip + " with email: " +  email);
-
                 checkSesionOpen(ip, email, (result) => { 
-                    console.log("passed session_open \n");
 
                     if(result == true) {
 
                         checkSessionId(session_id, ip, email, (resultA) => {
-                            console.log("passed session_id check \n")
 
                             if(resultA) { 
                                 
@@ -1120,8 +1108,6 @@ try {
                 const file_id = request.headers['file_id'];
                 const ip = request.ip; addIp(ip);
 
-                console.log("UPLOAD_OF_DATA used for ip: " + ip + " with email: " +  email);
-
                 checkSesionOpen(ip, email, (result) => { 
 
                     if(result == true) {
@@ -1207,8 +1193,6 @@ try {
 
                 const { email, session_id } = request.body;
                 const ip = request.ip; addIp(ip);
-
-                console.log("FETCH_FILE_NAMES used for ip: " + ip);
 
                 checkSesionOpen(ip, email, (result) => { 
 
@@ -1328,8 +1312,6 @@ try {
                 const { email , password , session_id } = request.body;
                 const ip = request.ip; addIp(ip);
 
-                console.log("AuthStep3 used for ip: " + ip + " and session_id: " + session_id);
-
                 checkSesionOpen(ip, email, (result) => {
 
                     if(result == true) {
@@ -1432,8 +1414,6 @@ try {
                 const {email, security_code } = request.body;
                 const ip = request.ip; addIp(ip);
                
-                console.log("AuthStep2 used for ip: " + ip + " and code: " + security_code);
-
                 checkSesionOpen(ip, email, (result) => {
 
                     if(result == true) {
@@ -1532,8 +1512,6 @@ try {
 
                 const { email , password } = request.body;
                 const ip = request.ip; addIp(ip);
-
-                console.log("AuthStep1 used for ip: " + ip + " with email: " + email);
 
                 checkSesionOpen(ip, email, (result) => {
 
@@ -1683,6 +1661,20 @@ try {
 
                 });
                 
+            });
+
+            app.get("/", (request, response) => {
+
+                response.sendFile(path.join(__dirname, 'my_own_space_web', 'index.html'), error => {
+
+                    if(error) {
+
+                        console.error(new Date() + ", error in sending file: " + error.message);
+
+                    }
+
+                });
+
             });
 
             // SERVER START LOGIC
