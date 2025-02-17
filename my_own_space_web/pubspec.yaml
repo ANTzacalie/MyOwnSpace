@@ -1,0 +1,37 @@
+name: my_own_space
+description: "Open-Source Private Cloud App"
+
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  mime: 2.0.0
+  http_parser: 4.0.0
+  http: ^1.2.2
+  path: ^1.8.0
+  path_provider: 2.1.5
+  file_picker: ^8.1.7
+  dio: ^5.7.0
+  html: ^0.15.5
+  intl: ^0.18.0
+  material_design_icons_flutter: ^7.0.7296
+  flutter_oss_licenses: ^2.0.0
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+
+flutter:
+  uses-material-design: true
