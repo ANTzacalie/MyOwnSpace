@@ -40,7 +40,7 @@ db.get(readQuery1, (error, result) => {
 
                     readData[3] = result.EMAIL;
                     readData[4] = result.PASSWORD;
-                    serverAddress = "https://" + result.HOSTNAME + ":" + result.PORT;
+                    serverAddress = "https://" + result.HOSTNAME + ":" + result.PORT + "/admin/protocol";
                     
                 }
 
