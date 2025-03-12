@@ -1287,7 +1287,7 @@ try {
 
                                 server.close(() => {
 
-                                    console.log('Server closed');
+                                    console.log('Server closed ' + date());
 
                                     db.close();
                                     dbOne.close();

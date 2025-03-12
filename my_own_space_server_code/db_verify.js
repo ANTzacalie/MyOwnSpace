@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 
 let Key = "";
 let admin_email = "";
-let max_ip_entries = 10000; // maximum number of allowed ip entries that request login
+let max_ip_entries = 100000; // maximum number of allowed ip entries that request login
 let session_inactive_time = 3600 * 60 * 1000; // time in ms
 let shutdown = 0;
 let serverAddress = "";
@@ -40,6 +40,7 @@ db.get(readQuery1, (error, result) => {
 
                     readData[3] = result.EMAIL;
                     readData[4] = result.PASSWORD;
+                    serverAddress = "https://" + result.HOSTNAME + ":" + result.PORT;
                     
                 }
 
@@ -66,7 +67,7 @@ const dbOne = new sqlite3.Database(dbOnePath, sqlite3.OPEN_READWRITE, (error) =>
 
 });
 
-const readQuery2 = "SELECT EMAIL,MAX_CONN_DAY,SESSION_ALLOWED_INACTIVE,ON_MAX_SHUTDOWN,ADDRESS FROM admin_table WHERE Id = 1";
+const readQuery2 = "SELECT EMAIL,MAX_CONN_DAY,SESSION_ALLOWED_INACTIVE,ON_MAX_SHUTDOWN,ADDRESS,KEY FROM admin_table WHERE Id = 1";
 dbOne.get(readQuery2, (error, result) => {
 
     if (error) {
@@ -87,7 +88,6 @@ dbOne.get(readQuery2, (error, result) => {
                     max_ip_entries = result.MAX_CONN_DAY;
                     session_inactive_time = result.SESSION_ALLOWED_INACTIVE;
                     shutdown = result.ON_MAX_SHUTDOWN;
-                    serverAddress = result.ADDRESS;
                     Key = result.KEY;
 
                 }
