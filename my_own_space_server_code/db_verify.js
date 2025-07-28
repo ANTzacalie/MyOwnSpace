@@ -266,6 +266,60 @@ function deleteAppIp() {
 
 }
 
+function vacuumDb() { 
+
+    db.run("VACUUM", (error) => {
+
+        if (error) {
+
+            console.error("Error during VACUUM operation:", error.message);
+
+        } else {
+
+            console.log("Database vacuumed successfully.");
+
+        }
+
+    });
+
+}
+
+function vacuumDbOne() {
+
+    dbOne.run("VACUUM", (error) => {
+
+        if (error) {
+
+            console.error("Error during VACUUM operation on admin_db:", error.message);
+
+        } else {
+
+            console.log("admin_db vacuumed successfully.");
+
+        }
+
+    });
+
+}
+
+function vacuumDbTwo() {
+
+    dbTwo.run("VACUUM", (error) => {
+
+        if (error) {
+
+            console.error("Error during VACUUM operation on ip_list:", error.message);
+
+        } else {
+
+            console.log("ip_list vacuumed successfully.");
+
+        }
+
+    });
+
+}
+
 function sleep(ms) {
 
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -288,7 +342,10 @@ async function main() {
             // Erase all from ip_table;
             deleteAppIp();
             date_on_start = new Date();
-
+            vacuumDb();
+            vacuumDbOne();
+            vacuumDbTwo();
+            
         }
         
         // Perform tasks
