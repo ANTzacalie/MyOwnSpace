@@ -10,17 +10,17 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
-  mime: 2.0.0
-  http_parser: 4.0.0
+  mime: ^2.0.0
+  http_parser: ^4.0.0
   http: ^1.2.2
   path: ^1.8.0
-  path_provider: 2.1.5
-  file_picker: ^8.1.7
+  path_provider: ^2.1.5
+  file_picker: ^10.2.0
   dio: ^5.7.0
   html: ^0.15.5
-  intl: ^0.18.0
+  intl: ^0.20.2
   material_design_icons_flutter: ^7.0.7296
-  flutter_oss_licenses: ^2.0.0
+  flutter_oss_licenses: ^3.0.4
   flutter:
     sdk: flutter
 
@@ -30,7 +30,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 
 flutter:
