@@ -332,12 +332,10 @@ try {
                     if (error) {
             
                         console.error("Cannot delete all rows in data:", error.message);
-                        callback(false);
             
                     } else {
             
-                        console.log("Row from table data sucefully deleated.");
-                        callback(true);
+                        console.log("All rows from table data sucefully deleated.");
                              
                     }
             
