@@ -218,7 +218,7 @@ class _LoginScreenDynamic extends State<_LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.start, // Aligns the above child on the main axis
           children: [ // The children layout , it allows multiple objects to exist in it
 
-            const SizedBox(height: 150), // Adds vertical space between widgets
+            const SizedBox(height: 120), // Adds vertical space between widgets
 
             const Text( // Text on screen
 
@@ -227,7 +227,7 @@ class _LoginScreenDynamic extends State<_LoginScreen> {
 
             ),
 
-            const SizedBox(height: 80), // Adds vertical space between widgets
+            const SizedBox(height: 50), // Adds vertical space between widgets
 
             SizedBox( // a sized box that contains a child
 
@@ -652,7 +652,7 @@ class _LoginScreen2Dynamic extends State<_LoginScreen2> {
           mainAxisAlignment: MainAxisAlignment.start, // Aligns the above child on the main axis
           children: [ // The children layout , it allows multiple objects to exist in it
 
-            const SizedBox(height: 150), // Adds vertical space between widgets
+            const SizedBox(height: 120), // Adds vertical space between widgets
 
             const SizedBox(
 
@@ -952,7 +952,7 @@ class _LoginScreen3Dynamic extends State<_LoginScreen3> {
           mainAxisAlignment: MainAxisAlignment.start, // Aligns the above child on the main axis
           children: [ // The children layout , it allows multiple objects to exist in it
 
-            const SizedBox(height: 150), // Adds vertical space between widgets
+            const SizedBox(height: 120), // Adds vertical space between widgets
 
             const Text( // Text on screen
 
