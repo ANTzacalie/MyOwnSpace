@@ -1,12 +1,32 @@
 const sqlite3 = require("sqlite3").verbose();
 const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+
 
 let Key = "";
 let admin_email = "";
-let max_ip_entries = 100000; // maximum number of allowed ip entries that request login
+let max_ip_entries = 10000; // maximum number of allowed ip entries that request login
 let session_inactive_time = 3600 * 60 * 1000; // time in ms
 let shutdown = 0;
 let serverAddress = "";
+
+
+function keyGenerator() {
+
+    const characters = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ123456789*&^%$#@!";
+
+    let password = "";
+
+    for (let i = 0; i < 128; i++) {
+
+        const randomIndex = crypto.randomInt(characters.length);
+        password += characters.charAt(randomIndex);
+
+    }
+
+    return password;
+
+}
 
 let readData = [null, null, null, null, null, null, null];
 const dbPath = "myOwnSpaceDb.sqlite"// DATA_BASE NAME AND LOCATION
@@ -36,7 +56,7 @@ db.get(readQuery1, (error, result) => {
 
             try {
 
-                if(result.PRIVATE_PATH != null) {
+                if(result.EMAIL != null && result.PASSWORD != null && result.HOSTNAME != null && result.PORT != null) {
 
                     readData[3] = result.EMAIL;
                     readData[4] = result.PASSWORD;
@@ -67,7 +87,7 @@ const dbOne = new sqlite3.Database(dbOnePath, sqlite3.OPEN_READWRITE, (error) =>
 
 });
 
-const readQuery2 = "SELECT EMAIL,MAX_CONN_DAY,SESSION_ALLOWED_INACTIVE,ON_MAX_SHUTDOWN,ADDRESS,KEY FROM admin_table WHERE Id = 1";
+const readQuery2 = "SELECT EMAIL,MAX_CONN_DAY,ALLOW_SHUTDOWN,KEY FROM admin_table WHERE Id = 1";
 dbOne.get(readQuery2, (error, result) => {
 
     if (error) {
@@ -85,9 +105,12 @@ dbOne.get(readQuery2, (error, result) => {
                 if(result.EMAIL != null) {
 
                     admin_email = result.EMAIL;
-                    max_ip_entries = result.MAX_CONN_DAY;
-                    session_inactive_time = result.SESSION_ALLOWED_INACTIVE;
-                    shutdown = result.ON_MAX_SHUTDOWN;
+
+                    if(result.MAX_CONN_DAY != 0 && result.ALLOW_SHUTDOWN == 1) {
+                        max_ip_entries = result.MAX_CONN_DAY;
+                    }
+                    
+                    shutdown = result.ALLOW_SHUTDOWN;
                     Key = result.KEY;
 
                 }
@@ -134,7 +157,6 @@ function emailSender() {
 
             user: readData[3],
             pass: readData[4] 
-            //duczgjxzkhrylfio , pass for you know what;
 
         }
 
@@ -247,6 +269,21 @@ function deleteSession() {
 
 }
 
+function autoKey(newKey) {
+
+    const query = `UPDATE admin_table SET KEY = ?`;
+    dbOne.run(query, [newKey], (error) => {
+
+        if (error) {
+
+            console.error("Cannot update key in table_admin:", error.message);
+
+        }
+
+    });
+
+}
+
 function deleteAppIp() {
 
     const query = `DELETE FROM ip_table`;
@@ -284,24 +321,6 @@ function vacuumDb() {
 
 }
 
-function vacuumDbOne() {
-
-    dbOne.run("VACUUM", (error) => {
-
-        if (error) {
-
-            console.error("Error during VACUUM operation on admin_db:", error.message);
-
-        } else {
-
-            console.log("admin_db vacuumed successfully.");
-
-        }
-
-    });
-
-}
-
 function vacuumDbTwo() {
 
     dbTwo.run("VACUUM", (error) => {
@@ -328,24 +347,26 @@ function sleep(ms) {
 
 async function main() {
 
+    autoKey(keyGenerator());
     deleteAppIp();
     let date_on_start = new Date();
 
-    while (true) {
+    while (true) {   
 
-        // Delay for 5 seconds before the next iteration, so all functions finish they job;
+        // Delay for 5 seconds before the next iteration, so all functions finish the job;
         await sleep(7000);
         let current_date = new Date();
 
         if((date_on_start - current_date) > 1440 * 60 * 1000) {
 
-            // Erase all from ip_table;
+            // Erase all from ip_table, vacuum db and change key every 24 hours;
             deleteAppIp();
             date_on_start = new Date();
             vacuumDb();
-            vacuumDbOne();
             vacuumDbTwo();
-            
+            autoKey(keyGenerator());
+            console.log("Database vacuumed, ip_table cleared and key changed every 24 hours.");
+
         }
         
         // Perform tasks

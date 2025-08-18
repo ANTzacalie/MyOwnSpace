@@ -332,10 +332,12 @@ try {
                     if (error) {
             
                         console.error("Cannot delete all rows in data:", error.message);
+                        callback(false);
             
                     } else {
             
-                        console.log("All rows from table data sucefully deleated.");
+                        console.log("Row from table data sucefully deleated.");
+                        callback(true);
                              
                     }
             
@@ -1696,9 +1698,9 @@ try {
 }
 
 
-// VER 1.0 release;
+// VER 1.2 release;
 // dev: M.C.A;
-// COMPLETE VERSION OF SERVER FOR VER 1.0;
+// COMPLETE VERSION OF SERVER FOR VER 1.2;
 
 
 
