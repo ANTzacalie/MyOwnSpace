@@ -271,6 +271,7 @@ function deleteSession() {
 
 function autoKey(newKey) {
 
+    Key = newKey;
     const query = `UPDATE admin_table SET KEY = ?`;
     dbOne.run(query, [newKey], (error) => {
 
