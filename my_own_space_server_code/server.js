@@ -8,6 +8,7 @@ const nodemailer = require("nodemailer");
 const { call } = require("function-bind");
 const path = require("path");
 const { EMPTY } = require("sqlite3");
+const checkDiskSpace = require('check-disk-space').default;
 
 const dbOnePath = "admin_db.sqlite";
 const dbOne = new sqlite3.Database(dbOnePath, sqlite3.OPEN_READWRITE, (error) => { //creating the instance of the database 
@@ -829,18 +830,22 @@ try {
                                             const fileType = resultB.FILE_TYPE;
                                             if (!fs.existsSync(filePath)) {
 
-                                                console.log("File path not existent! \n \n");
+                                                console.log("File path not existent! \n");
                                                 return response.status(500).send("NO_MESSAGE");
     
                                             } else {
 
-                                                const newPathFile = "./main/" + file_id + new_file_name + "." + fileType;
+                                                const safeId = path.basename(file_id);
+                                                const safeName = path.basename(new_file_name);
+                                                const safeType = path.basename(fileType);
+
+                                                const newPathFile = path.join("./main/" + safeId + safeName + "." + safeType);
 
                                                 fs.rename(filePath, newPathFile, (err) => {
 
                                                     if (err) {
 
-                                                        response.status(500).send("NO_MESSAGE");
+                                                        response.status(500).send("ERROR");
 
                                                     } else {
 
@@ -853,7 +858,7 @@ try {
 
                                                             } else {
 
-                                                                response.status(500).send("NO_MESSAGE");
+                                                                response.status(500).send("ERROR");
 
                                                             }
 
@@ -867,7 +872,7 @@ try {
 
                                         } else {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(500).send("ERROR");
 
                                         }
 
@@ -875,17 +880,20 @@ try {
 
                                 } else if(reason === "delete") { 
 
-                                    getFileInfo(file_name, file_id , (resultB) => { 
+                                    const safeName = path.basename(file_name);
+                                    const safeId = path.basename(file_id);
+
+                                    getFileInfo(safeName, safeId , (resultB) => { 
 
                                         if(resultB != null) {
 
                                             const filePath = resultB.FILE_URI;
                                             if (!fs.existsSync(filePath)) {
 
-                                                console.log("File path not existent! \n \n");
+                                                console.log("File path not existent! \n");
 
                                                 deleteFile(file_name, file_id);
-                                                return response.status(500).send("NO_MESSAGE");
+                                                return response.status(700).send("FILE_PATH_ERROR");
     
                                             } else {
 
@@ -894,7 +902,7 @@ try {
                                                     if (err) {
 
                                                         console.error('Error deleting file:', err);
-                                                        response.status(500).send("NO_MESSAGE");
+                                                        response.status(500).send("ERROR");
 
                                                     } else {
 
@@ -910,7 +918,7 @@ try {
 
                                         } else {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(500).send("ERROR");
 
                                         }
 
@@ -932,7 +940,7 @@ try {
     
                                         } else {
     
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(500).send("ERROR");
 
                                         }
     
@@ -943,7 +951,7 @@ try {
                             } else if(resultA == -1) {
 
                                 console.log("Error in multi data.");
-                                response.status(500).send("NO_MESSAGE");
+                                response.status(100).send("SESSION_INVALID");
 
                             } else {
 
@@ -953,16 +961,16 @@ try {
 
                                         if(resultCode) {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(100).send("SESSION_INVALID");
 
                                         } else if(resultCode == -1) {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(300).send("AWAIT_SESSION");
 
                                         } else {
 
                                             closeSession(ip, email);
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(600).send("SESSION_CLOSED");
 
                                         }
 
@@ -977,7 +985,7 @@ try {
                     } else {
 
                         console.log("Error in multi data, session dose not exist or is locked.")
-                        response.status(500).send("NO_MESSAGE");
+                        response.status(500).send("ERROR");
 
                     }
 
@@ -1003,14 +1011,16 @@ try {
 
                                     if(resultB != false) {
 
-                                        const fileFullName = file_id + file_name + "." + resultB.FILE_TYPE;
+                                        const safeId = path.basename(file_id);
+                                        const safeName = path.basename(file_name);
+                                        const fileFullName = path.join(safeId + safeName + "." + resultB.FILE_TYPE);
                                         const filePath = resultB.FILE_URI;
 
                                         // Check if the file exists on the filesystem, in main folder inside app files;
                                         if (!fs.existsSync(filePath)) {
 
                                             console.log("File path not existent! \n \n");
-                                            return response.status(500).send("NO_MESSAGE");
+                                            return response.status(500).send("ERROR");
 
                                         }
                 
@@ -1020,7 +1030,7 @@ try {
                                             if (err) {
 
                                                 console.error("Error sending data: ", err);
-                                                response.status(500).send("NO_MESSAGE");
+                                                response.status(500).send("ERROR");
 
                                             } else { loginLastTime(email, ip); }
 
@@ -1029,7 +1039,7 @@ try {
 
                                     } else {
 
-                                        response.status(500).send("NO_MESSAGE");
+                                        response.status(500).send("ERROR");
 
                                     }
 
@@ -1038,7 +1048,7 @@ try {
                             } else if(resultA == -1) {
 
                                 console.log("Error in downoading data.");
-                                response.status(500).send("NO_MESSAGE");
+                                response.status(100).send("SESSION_INVALID");
 
                             } else {
 
@@ -1048,16 +1058,16 @@ try {
 
                                         if(resultCode) {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(100).send("SESION_INVALID");
 
                                         } else if(resultCode == -1) {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(300).send("AWAIT_SESSION");
 
                                         } else {
 
                                             closeSession(ip, email);
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(600).send("SESSION_CLOSED");
 
                                         }
 
@@ -1072,7 +1082,7 @@ try {
                     } else {
 
                         console.log("Error in downloading data, session dose not exist or is locked.")
-                        response.status(500).send("NO_MESSAGE");
+                        response.status(500).send("ERROR");
 
                     }
 
@@ -1096,7 +1106,10 @@ try {
 
             });
 
-            const upload = multer({ storage });
+            const upload = multer({ 
+                storage,
+                limits: { fileSize: 1024 * 1024 * 1024 * 100 } // 100GB safety cap
+            });
 
             app.post("/upload" , async(request, response) => {
 
@@ -1107,6 +1120,19 @@ try {
                 const fileType = request.headers['file_type'];
                 const file_id = request.headers['file_id'];
                 const ip = request.ip; addIp(ip);
+
+                // --------- added disk space check -------
+                const driveRoot = path.parse(__dirname).root; // Windows safe
+                const { free } = await checkDiskSpace(driveRoot);
+
+                // Convert MB → bytes
+                const incomingSize = parseInt(fileSize) * 1024 * 1024;
+                const safetyBuffer = 5 * 1024 * 1024 * 1024; // 5GB buffer
+
+                if (!incomingSize || incomingSize > free - safetyBuffer) {
+                    return response.status(400).send("NOT_ENOUGH_SPACE");
+                }
+                // ----------------------------------------
 
                 checkSesionOpen(ip, email, (result) => { 
 
@@ -1119,9 +1145,13 @@ try {
                                 upload.single('file')(request, response, (error) => {
 
                                     if (!error) {
+                                        
+                                        const safeName = path.basename(fileName);
+                                        const safeType = path.basename(fileType);
+                                        const safeId = path.basename(file_id);
 
-                                        const filePath = "./main/" + file_id + fileName + "." + fileType;
-                                        insertIntoFolder(fileName, filePath, fileType, fileSize + " MB", file_id, (result) => {
+                                        const filePath = path.join("./main/" + safeId + safeName + "." + safeType);
+                                        insertIntoFolder(safeName, filePath, safeType, fileSize + " MB", safeId, (result) => {
 
                                             if(result) {
 
@@ -1130,7 +1160,7 @@ try {
 
                                             } else {
 
-                                                response.status(500).send("NO_MESSAGE");
+                                                response.status(500).send("ERROR");
 
                                             }
 
@@ -1138,7 +1168,7 @@ try {
 
                                     } else {
 
-                                        response.status(500).send("NO_MESSAGE");
+                                        response.status(500).send("ERROR");
 
                                     }
                     
@@ -1147,7 +1177,7 @@ try {
                             } else if(resultA == -1) {
 
                                 console.log("Error in uploading data.");
-                                response.status(500).send("NO_MESSAGE");
+                                response.status(100).send("SESSION_INVALID");
 
                             } else {
 
@@ -1157,16 +1187,16 @@ try {
 
                                         if(resultCode) {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(100).send("SESSION_INVALID");
 
                                         } else if(resultCode == -1) {
 
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(300).send("AWAIT_SESSION");
 
                                         } else {
 
                                             closeSession(ip, email);
-                                            response.status(500).send("NO_MESSAGE");
+                                            response.status(600).send("SESSION_CLOSED");
 
                                         }
 
@@ -1181,7 +1211,7 @@ try {
                     } else {
 
                         console.log("Error in uploading data, session dose not exist or is locked.")
-                        response.status(500).send("NO_MESSAGE");
+                        response.status(500).send("ERROR");
 
                     }
 
