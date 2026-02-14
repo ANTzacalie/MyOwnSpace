@@ -333,12 +333,10 @@ try {
                     if (error) {
             
                         console.error("Cannot delete all rows in data:", error.message);
-                        callback(false);
             
                     } else {
             
                         console.log("Row from table data sucefully deleated.");
-                        callback(true);
                              
                     }
             
@@ -1126,10 +1124,11 @@ try {
                 const { free } = await checkDiskSpace(driveRoot);
 
                 // Convert MB → bytes
-                const incomingSize = parseInt(fileSize) * 1024 * 1024;
+                const incomingSize =  parseFloat(fileSize) * 1024 * 1024;
                 const safetyBuffer = 5 * 1024 * 1024 * 1024; // 5GB buffer
 
-                if (!incomingSize || incomingSize > free - safetyBuffer) {
+                if (incomingSize > free - safetyBuffer) {
+                    console.log("***User tried to upload a file too large, system is out of space.");
                     return response.status(400).send("NOT_ENOUGH_SPACE");
                 }
                 // ----------------------------------------
@@ -1167,7 +1166,8 @@ try {
                                         });
 
                                     } else {
-
+                                        
+                                        console.log("***" + error);
                                         response.status(500).send("ERROR");
 
                                     }
