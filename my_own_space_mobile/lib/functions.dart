@@ -18,8 +18,7 @@ String localSessionId = "";
 Directory? pathForStorage;
 
 String generateRandomId(int length) {
-  const String chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-'; // Allowed characters for file names
+  const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-'; // Allowed characters for file names
 
   final Random random = Random();
   return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join();
@@ -42,7 +41,7 @@ Future<String?> loginPhase1(String email , String password , String address) asy
 
     final response = await http.post(
 
-      Uri.parse("$address/authStep1"),
+      Uri.parse("https://$address/authStep1"),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -83,7 +82,7 @@ Future<Map<String?, String?>> loginPhase2(String email , String address , String
 
     final response = await http.post(
 
-      Uri.parse("$address/authStep2"),
+      Uri.parse("https://$address/authStep2"),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -124,7 +123,7 @@ Future<String?> loginPhase3(String email , String password , String sessionId) a
 
     final response = await http.post(
 
-      Uri.parse("$localAddress/authStep3"),
+      Uri.parse("https://$localAddress/authStep3"),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -163,7 +162,7 @@ Future<List<dynamic>> fetchAllFilesNamesServer() async {
 
     final response = await http.post(
 
-      Uri.parse("$localAddress/fetch/file/names"),
+      Uri.parse("https://$localAddress/fetch/file/names"),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -197,7 +196,7 @@ Future<String?> addFileServer(String fullFileName, String fileName, String? file
     var request = http.MultipartRequest(
 
       'POST',
-      Uri.parse('$localAddress/upload'),
+      Uri.parse('https://$localAddress/upload'),
 
     );
 
@@ -313,7 +312,7 @@ Future<bool> fetchFileFromServer(String fileName, fileType , String fileId) asyn
 
   try {
 
-    final url = "$localAddress/download";
+    final url = "https://$localAddress/download";
 
     final response = await dio.download(
 
@@ -376,7 +375,7 @@ Future<bool> renameFileOnServer(String fileName, String fileId, String newFileNa
 
     final response = await http.post(
 
-      Uri.parse("$localAddress/multi/onFile"),
+      Uri.parse("https://$localAddress/multi/onFile"),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -408,7 +407,7 @@ Future<bool> deleteFileOnServer(String fileName, String fileId) async {
 
     final response = await http.post(
 
-      Uri.parse("$localAddress/multi/onFile"),
+      Uri.parse("https://$localAddress/multi/onFile"),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -440,7 +439,7 @@ Future<bool> deleteAllFilesOnServer() async {
 
     final response = await http.post(
 
-      Uri.parse("$localAddress/multi/onFile"),
+      Uri.parse("https://$localAddress/multi/onFile"),
       headers: {
         'Content-Type': 'application/json',
       },

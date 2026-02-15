@@ -1178,6 +1178,7 @@ class _MainAppScreenDynamic extends State<_MainAppScreen> {
       }
 
       final updatedData = await fetchAllFilesNamesServer();
+      if (!mounted) return;
 
       if (updatedData[0]["RET_VALUE"] != "ERROR" && updatedData[0]["RET_VALUE"] != null && updatedData[0]["RET_VALUE"] == "True") {
 
@@ -2012,8 +2013,8 @@ class _SettingsScreenDynamic extends State<_SettingsScreen> {
                       Navigator.pushAndRemoveUntil(
 
                           context,
-                          MaterialPageRoute(builder: (context) => _LoginScreen()), // first screen widget
-                          (route) => false, // Remove all previous routes
+                          MaterialPageRoute(builder: (context) => _LoginScreen()), // first screen widge
+                          (route) => route.isFirst,
 
                       );
 
