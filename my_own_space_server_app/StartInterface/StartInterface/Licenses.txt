@@ -1,0 +1,25 @@
+####################################################################################################
+Package:MaterialDesignThemes
+Version:5.2.1
+project URL:https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
+Description:ResourceDictionary instances containing Material Design templates and styles for
+      WPF controls in .NET.
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+####################################################################################################
+Package:System.Data.SQLite
+Version:1.0.119.0
+project URL:https://system.data.sqlite.org/
+Description:The official SQLite database engine for both x86 and x64 along with the ADO.NET provider.  This package includes support for LINQ and Entity Framework 6.
+licenseUrl:https://www.sqlite.org/copyright.html
+license Type:
+
+####################################################################################################
+Package:WPF-UI
+Version:4.0.3
+project URL:https://github.com/lepoco/wpfui
+Description:WPF UI provides the Fluent experience in your known and loved WPF framework. Intuitive design, themes, navigation and new immersive controls. All natively and effortlessly.
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+

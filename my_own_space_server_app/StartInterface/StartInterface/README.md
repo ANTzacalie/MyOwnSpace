@@ -1,0 +1,1 @@
+- This is the source code of the .NET Windows WPF application, for you to compile your own build is required that the server folder to exist in output bin folder , right next to the .exe.
