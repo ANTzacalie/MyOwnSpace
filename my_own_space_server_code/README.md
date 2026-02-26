@@ -1,0 +1,1 @@
+- For the server folder to be complete for running, a copy of my_own_space_web folder should be in this current folder.

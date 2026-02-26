@@ -1,6 +1,6 @@
 {
-    "name": "my_own_space",
-    "short_name": "my_own_space",
+    "name": "web",
+    "short_name": "web",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
