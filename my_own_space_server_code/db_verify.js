@@ -350,6 +350,9 @@ async function main() {
 
     autoKey(keyGenerator());
     deleteAppIp();
+    vacuumDb();
+    vacuumDbTwo();
+    console.log("Database vacuumed, ip_table cleared and key changed every 24 hours.");
     let date_on_start = new Date();
 
     while (true) {   
