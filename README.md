@@ -67,16 +67,79 @@ Shared Storage Folder
 ## 📷 Screenshots
 
 ### Windows Server Application
-```
-assets/p1.png
-assets/p2.png
-assets/p3.png
-assets/p4.png
-```
+### 🖥️ Windows Server Application
 
-### Client Applications
+<details>
+<summary>📷 Win-Server Screenshots </summary>
 
+<br>
 
+<p align="center">
+  <a href="assets/p1.png">
+    <img src="assets/p1.png" width="600"><br>
+    <sub><b>Step 1: Initial Setup Page</b></sub>
+  </a>
+</p>
+
+<p align="center">
+  <a href="assets/p2.png">
+    <img src="assets/p2.png" width="600"><br>
+    <sub><b>Step 2: Admin Configuration</b></sub>
+  </a>
+</p>
+
+<p align="center">
+  <a href="assets/p3.png">
+    <img src="assets/p3.png" width="600"><br>
+    <sub><b>Step 3: Add User Page</b></sub>
+  </a>
+</p>
+
+<p align="center">
+  <a href="assets/p4.png">
+    <img src="assets/p4.png" width="600"><br>
+    <sub><b>Step 4: Final</b></sub>
+  </a>
+</p>
+
+</details>
+
+### 🪟🐧📱🌐Client Applications
+
+<details>
+<summary>📷 Windows/Linux/Android/Web Screenshots </summary>
+
+<br>
+
+<p align="center">
+  <a href="assets/p1.png">
+    <img src="assets/d1.png" width="600"><br>
+    <sub><b>Step 1: Initial Setup Page</b></sub>
+  </a>
+</p>
+
+<p align="center">
+  <a href="assets/p2.png">
+    <img src="assets/d2.png" width="600"><br>
+    <sub><b>Step 2: Admin Configuration</b></sub>
+  </a>
+</p>
+
+<p align="center">
+  <a href="assets/p3.png">
+    <img src="assets/d3.png" width="600"><br>
+    <sub><b>Step 3: Add User Page</b></sub>
+  </a>
+</p>
+
+<p align="center">
+  <a href="assets/p4.png">
+    <img src="assets/d4.png" width="600"><br>
+    <sub><b>Step 4: Final</b></sub>
+  </a>
+</p>
+
+</details>
 
 ---
 
@@ -89,11 +152,10 @@ assets/p4.png
 3. Launch the server application **as Administrator**
 4. Configure:
 
-   * storage folder
    * HTTPS certificate
    * server port
    * admin email
-   * IP brute-force threshold
+   * IP brute-force threshold(SAC)
 5. Start the server
 
 ---
