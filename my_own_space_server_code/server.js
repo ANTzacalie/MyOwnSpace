@@ -89,7 +89,7 @@ try {
 
             const app = express() //Here we initialize the application with Express for HTTPS Request
             app.use(express.json()); //tells the app how to parse json
-            app.use('/', express.static(path.join(__dirname, 'my_own_space_web'))); //tells the app where to find the static files
+            app.use('/', express.static(path.join(__dirname, 'web_build'))); //tells the app where to find the static files
             
             const server = https.createServer({ // https server
 
@@ -1695,7 +1695,7 @@ try {
 
             app.get("/", (request, response) => {
 
-                response.sendFile(path.join(__dirname, 'web_build', 'index.html'), error => {
+                response.sendFile(path.join(__dirname, 'web_build', 'index.html'), error => { // my_own_space_web
 
                     if(error) {
 
