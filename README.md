@@ -115,6 +115,7 @@ Steps:
        - Save
          
   8. Open and connect to admin_db.sqlite, here you gonna edit:
+
      * Table admin_table row with ID = 1:
         - MAX_CONN_DAY = 10000 default, modify for more or less, if you wish to have Automatic shutdown on brute-force attack detection
         - KEY, leave empty, modified only by the server
