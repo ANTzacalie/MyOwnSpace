@@ -224,33 +224,11 @@ Verification Code(sent via email)
 
 <br>
 
-<p align="center">
-  <a href="assets/p1.png">
-    <img src="assets/d1.png" width="600"><br>
-    <sub><b>Step 1: Initial Setup Page</b></sub>
-  </a>
-</p>
+| | | |
+|--|--|--|
+| <a href="assets/1.png"><img src="assets/1.png" width="250"></a> | <a href="assets/2.png"><img src="assets/2.png" width="250"></a> | <a href="assets/3.png"><img src="assets/3.png" width="250"></a> |
+| <a href="assets/4.png"><img src="assets/4.png" width="250"></a> | <a href="assets/5.png"><img src="assets/5.png" width="250"></a> | <a href="assets/6.png"><img src="assets/6.png" width="250"></a> |
 
-<p align="center">
-  <a href="assets/p2.png">
-    <img src="assets/d2.png" width="600"><br>
-    <sub><b>Step 2: Admin Configuration</b></sub>
-  </a>
-</p>
-
-<p align="center">
-  <a href="assets/p3.png">
-    <img src="assets/d3.png" width="600"><br>
-    <sub><b>Step 3: Add User Page</b></sub>
-  </a>
-</p>
-
-<p align="center">
-  <a href="assets/p4.png">
-    <img src="assets/d4.png" width="600"><br>
-    <sub><b>Step 4: Final</b></sub>
-  </a>
-</p>
 
 </details>
 
