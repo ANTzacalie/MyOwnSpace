@@ -1695,7 +1695,7 @@ try {
 
             app.get("/", (request, response) => {
 
-                response.sendFile(path.join(__dirname, 'my_own_space_web', 'index.html'), error => {
+                response.sendFile(path.join(__dirname, 'web_build', 'index.html'), error => {
 
                     if(error) {
 
