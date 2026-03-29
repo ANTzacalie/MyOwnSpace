@@ -188,47 +188,145 @@ Verification Code(sent via email)
 <br>
 
 <p align="center">
-  <a href="assets/p1.png">
-    <img src="assets/p1.png" width="600"><br>
+  <a href="assets/server_s/p1.png">
+    <img src="assets/server_s/p1.png" width="600"><br>
     <sub><b>Step 1: Initial Setup Page</b></sub>
   </a>
 </p>
 
 <p align="center">
-  <a href="assets/p2.png">
-    <img src="assets/p2.png" width="600"><br>
+  <a href="assets/server_s/p2.png">
+    <img src="assets/server_s/p2.png" width="600"><br>
     <sub><b>Step 2: Admin Configuration</b></sub>
   </a>
 </p>
 
 <p align="center">
-  <a href="assets/p3.png">
-    <img src="assets/p3.png" width="600"><br>
+  <a href="assets/server_s/p3.png">
+    <img src="assets/server_s/p3.png" width="600"><br>
     <sub><b>Step 3: Add User Page</b></sub>
   </a>
 </p>
 
 <p align="center">
-  <a href="assets/p4.png">
-    <img src="assets/p4.png" width="600"><br>
+  <a href="assets/server_s/p4.png">
+    <img src="assets/server_s/p4.png" width="600"><br>
     <sub><b>Step 4: Final</b></sub>
   </a>
 </p>
 
 </details>
 
-### 🪟🐧📱🌐Client Applications
+### 🪟🐧📱🌐 Client Applications
 
 <details>
-<summary>📷 Windows/Linux/Android/Web Screenshots </summary>
+<summary>📷 Windows / Linux / Android / Web Screenshots</summary>
 
 <br>
 
-| | | |
-|--|--|--|
-| <a href="assets/1.png"><img src="assets/1.png" width="250"></a> | <a href="assets/2.png"><img src="assets/2.png" width="250"></a> | <a href="assets/3.png"><img src="assets/3.png" width="250"></a> |
-| <a href="assets/4.png"><img src="assets/4.png" width="250"></a> | <a href="assets/5.png"><img src="assets/5.png" width="250"></a> | <a href="assets/6.png"><img src="assets/6.png" width="250"></a> |
+<table>
 
+<tr>
+
+<td align="center">
+<b>Android – Login</b><br>
+<a href="assets/android_s/d1.png">
+<img src="assets/android_s/d1.png" width="220">
+</a><br>
+<sub>Email, Password and Server Address fields</sub>
+</td>
+
+<td align="center">
+<b>Android – Email Verification</b><br>
+<a href="assets/android_s/d2.png">
+<img src="assets/android_s/d2.png" width="220">
+</a><br>
+<sub>Here is to input the received code via email</sub>
+</td>
+
+<td align="center">
+<b>Android – Upload/Download/Edit</b><br>
+<a href="assets/android_s/d3.png">
+<img src="assets/android_s/d3.png" width="220">
+</a><br>
+<sub>Main file access interface, upload/download/edit files to server</sub>
+</td>
+
+<td align="center">
+<b>Android – Settings</b><br>
+<a href="assets/android_s/d4.png">
+<img src="assets/android_s/d4.png" width="220">
+</a><br>
+<sub>Settings has sign out,remove all files and about etc...</sub>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="center">
+<b>Linux – Login</b><br>
+<a href="assets/linux_s/l1.png">
+<img src="assets/linux_s/l1.png" width="220">
+</a><br>
+<sub>Email, Password and Server Address fields</sub>
+</td>
+
+<td align="center">
+<b>Linux – Email Verification</b><br>
+<a href="assets/linux_s/l2.png">
+<img src="assets/linux_s/l2.png" width="220">
+</a><br>
+<sub>Here is to input the received code via email</sub>
+</td>
+
+<td align="center">
+<b>Linux – Upload/Download/Edit</b><br>
+<a href="assets/linux_s/l3.png">
+<img src="assets/linux_s/l3.png" width="220">
+</a><br>
+<sub>Main file access interface, upload/download/edit files to serve</sub>
+</td>
+
+<td align="center">
+<b>Linux – Settings</b><br>
+<a href="assets/linux_s/l4.png">
+<img src="assets/linux_s/l4.png" width="220">
+</a><br>
+<sub>Settings has sign out,remove all files and about etc...</sub>
+</td>
+
+</tr>
+
+<tr>
+
+<td align="center">
+<b>Web – Login</b><br>
+<a href="assets/web_s/w1.png">
+<img src="assets/web_s/w1.png" width="220">
+</a><br>
+<sub>Email, Password and Server Address fields, always requires verification</sub>
+</td>
+
+<td align="center">
+<b>Web – Upload/Download/Edit</b><br>
+<a href="assets/web_s/w2.png">
+<img src="assets/web_s/w2.png" width="220">
+</a><br>
+<sub>Main file access interface, upload/download/edit files to serve</sub>
+</td>
+
+<td align="center">
+<b>Web – Settings</b><br>
+<a href="assets/web_s/w3.png">
+<img src="assets/web_s/w3.png" width="220">
+</a><br>
+<sub>Settings has sign out,remove all files and about etc...</sub>
+</td>
+
+</tr>
+
+</table>
 
 </details>
 
@@ -243,6 +341,10 @@ Verification Code(sent via email)
 /my_own_space_server_code
 /my_own_space_web
 /assets
+ |- /android_s
+ |- /linux_s
+ |- /web_s
+ |- /server_s
 LICENSE
 README.md
 ```
