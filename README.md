@@ -101,6 +101,7 @@ Steps:
   5. Now inside my_own_space_server_code identify this 2 files admin_db.sqlite and myOwnSpaceDb.sqlite
   6. Use any database editor that supports SQLite read/write/alter operations
   7. Open and connect to myOwnSpaceDb.sqlite, here you gonna edit:
+     
      * Table INPUT row with ID = 1:
        - EMAIL(for sending verification code)
        - PASSWORD for that email
@@ -111,7 +112,8 @@ Steps:
 
      * Table users, you gonna add new rows:
        - only add EMAIL and PASSWORD for users, all other columns get modified by the server!
-       - SAVE
+       - Save
+         
   8. Open and connect to admin_db.sqlite, here you gonna edit:
      * Table admin_table row with ID = 1:
         - MAX_CONN_DAY = 10000 default, modify for more or less, if you wish to have Automatic shutdown on brute-force attack detection
@@ -119,7 +121,8 @@ Steps:
         - ALLOW_SHUTDOWN = 0(if you dont want the server to not close if MAX_CONN_DAY is reached) and 1(for the server to close)
         - EMAIL(Admin)
         - Save
-  10. Final step:
+          
+  9. Final step:
   ```bash
       cd my_own_space_server_code
       node db_verify.js
