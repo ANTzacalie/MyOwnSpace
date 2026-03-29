@@ -26133,7 +26133,7 @@ j.aF()
 j.a3i(null,null,o)
 p.ch$!==$&&A.an()
 p.ch$=j
-k=j}p.Z5(new A.CY(m,new A.Mm("/main",null),l,k,null))
+k=j}p.Z5(new A.CY(m,new A.Mm("/login",null),l,k,null))
 p.Km()
 return A.P(null,r)}})
 return A.Q($async$ayy,r)},
