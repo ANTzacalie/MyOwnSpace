@@ -11,6 +11,8 @@ Open-source self-hosted cloud storage platform with multi-client synchronization
 <p align="center">
 <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Android%20%7C%20Web-blue">
 <img src="https://img.shields.io/badge/server-NodeJS-green">
+<img src="https://img.shields.io/badge/code-Dart-blue">
+<img src="https://img.shields.io/badge/framework-Flutter-lightblue">
 <img src="https://img.shields.io/badge/database-SQLite-orange">
 <img src="https://img.shields.io/badge/license-MIT-brightgreen">
 </p>
