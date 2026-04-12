@@ -33,6 +33,7 @@ The platform is designed to be easy to deploy on Windows using a dedicated graph
 * Windows / Linux / Android / Web apps
 * HTTPS only communication (certificate required)
 * Unlimited user accounts
+* Large file upload, files can be big as the size of free storage on the server machine.
 * Shared storage model (all users access the same storage folder)
 * Supports all file types *(except folders)*
 * Material Design based UI (Material 2 / Material 3)
