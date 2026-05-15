@@ -9,13 +9,16 @@
 Open-source self-hosted cloud storage platform with multi-client synchronization.
 </p>
 
-
+<p align="center">
+  
 ![Windows](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Android%20%7C%20Web-0078D4?style=for-the-badge&logo=windows&logoColor=white)
 ![NodeJS](https://img.shields.io/badge/Node.js-Server-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-Language-0175C2?style=for-the-badge&logo=dart&logoColor=white)
 ![Flutter](https://img.shields.io/badge/Flutter-Framework-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![MIT](https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge)
+  
+</p>
 
 ---
 
