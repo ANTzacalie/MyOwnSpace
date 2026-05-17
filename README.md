@@ -98,7 +98,7 @@ Shared Storage Folder
 ### 🐧 Linux Server (Manual Setup)
 Requirements:
 
-* Node.js installed, see https://nodejs.org/en
+* Node.js installed, see https://nodejs.org/en/download
 * Database editor
 
 Steps:
