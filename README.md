@@ -75,7 +75,8 @@ Shared Storage Folder
 1. Download `my_own_space_win_server_installer.exe`
 2. Run the installer and complete setup
 3. Launch the server application **as Administrator**
-4. Configure:
+4. Download and install Node.js `https://nodejs.org/en/download`
+5. Configure:
 
    * https certificate
    * hostname, server IP(internal IPv4) or domain
@@ -90,7 +91,7 @@ Shared Storage Folder
        
    * back to the main interface click on (+- Users) and add as many as you want
   
-5. Start the server
+6. Start the server
 
 ---
 
